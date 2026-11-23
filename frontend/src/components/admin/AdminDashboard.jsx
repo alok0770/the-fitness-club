@@ -303,6 +303,15 @@ export default function AdminDashboard({ onLogout }) {
                             {item.badge}
                           </span>
                         )}
+                        {activeTab === 'plans' && (
+                          <span className={`px-2 py-0.5 text-[10px] font-mono font-bold uppercase border ${
+                            item.isActive !== false
+                              ? 'bg-emerald-950/80 text-emerald-400 border-emerald-500/40'
+                              : 'bg-red-950/80 text-red-400 border-red-500/40'
+                          }`}>
+                            {item.isActive !== false ? 'Live on Site' : 'Hidden'}
+                          </span>
+                        )}
                       </div>
                     </div>
 

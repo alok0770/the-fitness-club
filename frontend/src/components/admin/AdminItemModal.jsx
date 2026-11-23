@@ -783,7 +783,11 @@ export default function AdminItemModal({
                     onChange={(e) => handleChange('isActive', e.target.checked)}
                     className="accent-[#c5a880] w-4 h-4"
                   />
-                  <span className="text-xs font-mono uppercase text-gray-300">Is Active on Website</span>
+                  <span className={`text-xs font-mono uppercase font-semibold ${
+                    (formData.isActive ?? true) ? 'text-emerald-400' : 'text-red-400'
+                  }`}>
+                    {(formData.isActive ?? true) ? '● Active (Visible on Public Site)' : '○ Hidden (Inactive on Public Site)'}
+                  </span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer select-none">
