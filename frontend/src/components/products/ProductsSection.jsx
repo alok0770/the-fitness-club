@@ -1,14 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
   ArrowUpRight,
   ShoppingBag,
-  Sparkles,
-  CheckCircle2,
-  Tag,
-  ShieldCheck,
 } from 'lucide-react';
 import { getWhatsAppUrl } from '../../config/siteConfig';
 
@@ -170,13 +166,29 @@ const DEFAULT_PRODUCTS = [
   },
 ];
 
-// Single Product Card with Framer Motion pop, spring zoom, and gold glow
+// Helper to auto-format price with ₹ prefix if missing
+function formatPrice(price) {
+  if (!price) return '₹0';
+  const str = String(price).trim();
+  if (str.startsWith('₹') || str.startsWith('Rs') || str.startsWith('INR')) {
+    return str;
+  }
+  const cleanNum = parseFloat(str.replace(/[^0-9.]/g, ''));
+  if (!isNaN(cleanNum)) {
+    return `₹${cleanNum.toLocaleString('en-IN')}`;
+  }
+  return `₹${str}`;
+}
+
+// Single Product Card with Balanced Luxury Retail Layout
 function ProductCardItem({ product, index }) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const formattedPrice = formatPrice(product.price);
+
   const handleInquire = () => {
     const url = getWhatsAppUrl(
-      `Hello The Fitness Club, I would like to inquire about purchasing: ${product.name} (${product.price}).`
+      `Hello The Fitness Club, I would like to inquire about purchasing: ${product.name} (${formattedPrice}).`
     );
     window.open(url, '_blank');
   };
@@ -191,75 +203,76 @@ function ProductCardItem({ product, index }) {
       style={{ touchAction: 'pan-x pan-y' }}
     >
       <motion.div
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ y: -6 }}
         transition={{ type: 'spring', stiffness: 240, damping: 20 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="group relative w-full h-[490px] sm:h-[515px] overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col justify-between"
+        className="group relative w-full h-full min-h-[460px] overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col justify-between"
       >
-        {/* Showcase Image Stage */}
-        <div>
-          <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#111116] via-[#09090c] to-[#040405] p-6 flex items-center justify-center">
-            <motion.div
-              animate={{ scale: isHovered ? 1.07 : 1 }}
-              transition={{ type: 'spring', stiffness: 90, damping: 20 }}
-              className="w-full h-full flex items-center justify-center"
-            >
-              <img
-                src={product.image}
-                alt={product.name}
-                loading="lazy"
-                className="w-full h-full object-contain filter contrast-[1.06] drop-shadow-[0_20px_35px_rgba(0,0,0,0.9)] transition-all duration-500"
-              />
-            </motion.div>
+        {/* Studio Product Stage (h-60 sm:h-64 w-full shrink-0) */}
+        <div className="relative h-60 sm:h-64 w-full shrink-0 flex items-center justify-center p-5 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.12)_0%,#111116_55%,#09090c_100%)] overflow-hidden">
+          <motion.div
+            animate={{ scale: isHovered ? 1.06 : 1 }}
+            transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+            className="w-full h-full flex items-center justify-center"
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              loading="lazy"
+              className="max-h-full max-w-full object-contain filter contrast-[1.05] drop-shadow-[0_18px_30px_rgba(0,0,0,0.85)] transition-all duration-500"
+            />
+          </motion.div>
 
-            {/* Top Badges */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-20">
-              <span className="px-2.5 py-1 text-[9px] uppercase tracking-wider text-gray-300 bg-black/75 backdrop-blur-md border border-white/10 font-bold font-mono">
-                {product.category}
-              </span>
-              <span className="px-2.5 py-1 text-[9px] uppercase tracking-wider text-[#e5c99e] bg-[#c5a880]/15 backdrop-blur-md border border-[#c5a880]/30 font-bold font-mono">
-                {product.badge || product.status || 'In Stock'}
-              </span>
-            </div>
-          </div>
-
-          {/* Product Info Block */}
-          <div className="p-5 sm:p-6 space-y-2 relative z-20">
-            <span className="text-[10px] uppercase tracking-wider text-gray-500 font-mono font-medium block">
-              {product.edition}
+          {/* Top Badges */}
+          <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none z-20">
+            <span className="px-2.5 py-1 text-[9px] uppercase tracking-wider text-gray-300 bg-black/75 backdrop-blur-md border border-white/10 font-bold font-mono">
+              {product.category}
             </span>
-
-            <h3 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-white font-display group-hover:text-[#c5a880] transition-colors duration-300 line-clamp-1">
-              {product.name}
-            </h3>
-
-            <p className="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">
-              {product.details}
-            </p>
+            <span className="px-2.5 py-1 text-[9px] uppercase tracking-wider text-[#e5c99e] bg-[#c5a880]/15 backdrop-blur-md border border-[#c5a880]/30 font-bold font-mono">
+              {product.badge || product.status || 'In Stock'}
+            </span>
           </div>
         </div>
 
-        {/* Bottom Pricing & Acquire Bar */}
-        <div className="p-5 sm:p-6 pt-0 flex items-center justify-between border-t border-white/[0.08] mt-3 relative z-20">
-          <div>
-            <span className="text-[9px] uppercase tracking-wider text-gray-400 font-mono block">
-              Price
-            </span>
-            <span className="text-xl font-bold text-white font-mono tracking-tight text-[#c5a880]">
-              {product.price}
-            </span>
+        {/* Always-Visible Product Info Block */}
+        <div className="p-5 flex-1 flex flex-col justify-between space-y-4 bg-[#0b0b0e]">
+          <div className="space-y-1.5">
+            {product.edition && (
+              <span className="text-[10px] uppercase tracking-wider text-gray-400 font-mono font-medium block truncate">
+                {product.edition}
+              </span>
+            )}
+            <h3 className="text-base sm:text-lg font-bold uppercase tracking-tight text-white group-hover:text-[#c5a880] transition-colors line-clamp-1 font-display">
+              {product.name}
+            </h3>
+            {product.details && (
+              <p className="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">
+                {product.details}
+              </p>
+            )}
           </div>
 
-          <motion.button
-            type="button"
-            onClick={handleInquire}
-            whileTap={{ scale: 0.95 }}
-            className="px-4 py-2 border border-white/20 hover:border-[#c5a880] bg-black/60 hover:bg-[#c5a880] text-gray-200 hover:text-black text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-all duration-300 shadow-sm"
-          >
-            <span>Acquire</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#c5a880] group-hover:text-black transition-colors" />
-          </motion.button>
+          {/* Bottom divider + Price & Action Row */}
+          <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
+            <div>
+              <span className="text-[9px] uppercase tracking-wider text-gray-500 font-mono block">
+                Price
+              </span>
+              <span className="text-xl sm:text-2xl font-mono font-bold text-[#c5a880]">
+                {formattedPrice}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleInquire}
+              className="px-4 py-2 bg-[#c5a880] hover:bg-white text-black text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer shrink-0"
+            >
+              <span>Inquire</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-black" />
+            </button>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -317,8 +330,6 @@ export default function ProductsSection({ products = [] }) {
 
   return (
     <section id="products" className="py-24 sm:py-32 relative bg-black overflow-hidden selection:bg-[#c5a880] selection:text-black">
-
-
       {/* Ambient Lighting Spheres */}
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#c5a880]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 left-0 w-80 h-80 bg-[#a07e4d]/10 rounded-full blur-[120px] pointer-events-none" />
@@ -358,7 +369,7 @@ export default function ProductsSection({ products = [] }) {
                       scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
                     }
                   }}
-                  className={`px-4 py-2 text-[11px] uppercase tracking-widest font-mono font-semibold transition-all duration-300 border ${
+                  className={`px-4 py-2 text-[11px] uppercase tracking-widest font-mono font-semibold transition-all duration-300 border cursor-pointer ${
                     activeCategory === cat
                       ? 'border-[#c5a880] bg-[#c5a880] text-black shadow-sm font-bold'
                       : 'border-white/10 text-gray-400 hover:text-white hover:border-white/30 bg-[#0e0e12]'
@@ -376,7 +387,7 @@ export default function ProductsSection({ products = [] }) {
                 onClick={() => handleScroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Scroll Left"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -385,7 +396,7 @@ export default function ProductsSection({ products = [] }) {
                 onClick={() => handleScroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Scroll Right"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>

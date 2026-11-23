@@ -72,49 +72,68 @@ export default function PricingSection({ plans: propPlans } = {}) {
     window.open(getWhatsAppUrl(message), '_blank');
   };
 
-  // Dynamic Highlighting & Math Utilities
-  const maxDuration = plans.length > 0
-    ? Math.max(...plans.map((p) => Number(p.durationMonths) || 1))
-    : 12;
-
   const singleMonthPlan = plans.find((p) => (Number(p.durationMonths) || 1) === 1);
   const baseMonthlyPrice = singleMonthPlan ? Number(singleMonthPlan.price) : 1000;
 
-  // Build luxury features list per plan
+  // Build authentic, honest gym features list
   const getPlanFeatures = (plan, duration, isVip) => {
-    const features = [];
+    const cardioLine = cardioIncluded
+      ? 'Full Treadmills & Cardio Zone Access'
+      : 'Strength & Weight Floor Access';
 
     if (plan.featuresSummary && plan.featuresSummary.trim()) {
-      const parts = plan.featuresSummary
+      const customFeatures = plan.featuresSummary
         .split(/[,;\n•]+/)
         .map((s) => s.trim())
         .filter(Boolean);
-      features.push(...parts);
+
+      const hasCardioMention = customFeatures.some((f) =>
+        f.toLowerCase().includes('cardio') ||
+        f.toLowerCase().includes('treadmill') ||
+        f.toLowerCase().includes('strength & weight floor')
+      );
+
+      if (!hasCardioMention) {
+        return [...customFeatures, cardioLine];
+      }
+      return customFeatures;
     }
 
-    features.push('Full Sanctum & Heavy Iron Access');
-    features.push('Calibrated Kilo Plates & Squat Racks');
-    features.push(
-      cardioIncluded
-        ? 'Commercial Treadmills & Cardio Machines'
-        : 'Standard Warm-Up Equipment Only'
-    );
-    features.push('Biometric 24/7 RFID Gate Access');
-    features.push('Private Locker & Shower Facilities');
+    // Default perks tailored by tier
+    const basePerks = [
+      'Full Gym Floor & Free Weights Access',
+      'Strength Machines & Lifting Zone',
+      'Floor Trainer Form Guidance',
+      'Dedicated Changing & Bag Storage Area',
+      cardioLine,
+    ];
+
+    if (isVip || duration >= 12) {
+      return [
+        'Full Gym Floor & Free Weights Access',
+        'Strength Machines & Lifting Zone',
+        'Personalized Diet & Workout Roadmap',
+        'Priority 1-on-1 Form & Routine Guidance',
+        '10% Member Discount at The Pro Shop',
+        '2 Free Guest Day-Passes for Friends',
+        'Travel Pause Option (Up to 15 Days Freeze)',
+        cardioLine,
+      ];
+    }
 
     if (duration >= 3) {
-      features.push('Personalized Progressive Overload Protocol');
-    }
-    if (duration >= 6) {
-      features.push('Biomechanical Technique Review');
-      features.push('2 Complimentary Athlete Guest Passes');
-    }
-    if (duration >= 12 || isVip) {
-      features.push('Quarterly Body Composition Scans');
-      features.push('Permanent VIP Reserved Locker Option');
+      return [
+        'Full Gym Floor & Free Weights Access',
+        'Strength Machines & Lifting Zone',
+        'Custom Workout Split & Routine Plan',
+        'Monthly Strength & Progress Check-In',
+        'Priority Floor Trainer Support',
+        'Dedicated Changing & Bag Storage Area',
+        cardioLine,
+      ];
     }
 
-    return Array.from(new Set(features)).slice(0, 6);
+    return basePerks;
   };
 
   const getTierSubtitle = (duration, planTier) => {
@@ -131,8 +150,6 @@ export default function PricingSection({ plans: propPlans } = {}) {
       id="membership"
       className="py-24 sm:py-32 relative bg-black overflow-hidden selection:bg-[#c5a880] selection:text-black"
     >
-
-
       {/* Ambient Lighting Spheres */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#c5a880]/10 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#a07e4d]/10 rounded-full blur-[140px] pointer-events-none" />
@@ -161,12 +178,12 @@ export default function PricingSection({ plans: propPlans } = {}) {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            {/* Premium Cardio Access Switcher */}
+            {/* Cardio Access Switcher */}
             <div className="inline-flex p-1 bg-[#111116] border border-white/10 rounded-full shadow-inner relative">
               <button
                 type="button"
                 onClick={() => setCardioIncluded(false)}
-                className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 ${
+                className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 cursor-pointer ${
                   !cardioIncluded ? 'text-black font-bold' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -183,7 +200,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
               <button
                 type="button"
                 onClick={() => setCardioIncluded(true)}
-                className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 flex items-center gap-1.5 ${
+                className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 flex items-center gap-1.5 cursor-pointer ${
                   cardioIncluded ? 'text-black font-bold' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -212,7 +229,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
                 onClick={() => handleScroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Scroll Left"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -221,7 +238,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
                 onClick={() => handleScroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Scroll Right"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -250,8 +267,8 @@ export default function PricingSection({ plans: propPlans } = {}) {
             const cardioSurcharge = cardioIncluded ? 200 * duration : 0;
             const displayedPrice = basePrice + cardioSurcharge;
 
-            // Longest duration (12-Month) package automatically gets featured luxury highlight
-            const isVip = Boolean(plan.isPopular || duration >= 12 || (duration === maxDuration && maxDuration > 1));
+            // Only highlight a card as isVip when Boolean(plan.isPopular) || duration >= 12
+            const isVip = Boolean(plan.isPopular) || duration >= 12;
 
             // Billing cycle formatting
             const billingCycle =
@@ -272,9 +289,9 @@ export default function PricingSection({ plans: propPlans } = {}) {
             const ctaText =
               duration === 1
                 ? 'Join 1-Month'
-                : isVip
+                : duration >= 12
                 ? 'Access VIP Annual'
-                : `Claim ${duration}-Month Pass`;
+                : `Join ${duration}-Month Plan`;
 
             return (
               <motion.div
@@ -289,7 +306,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                  className={`relative h-[560px] sm:h-[580px] flex flex-col justify-between p-8 sm:p-9 transition-all duration-300 ${
+                  className={`relative min-h-[560px] sm:min-h-[580px] flex flex-col justify-between p-8 sm:p-9 transition-all duration-300 ${
                     isVip
                       ? 'bg-gradient-to-b from-[#141312] via-[#0d0c0b] to-[#080808] border-2 border-[#c5a880] shadow-[0_0_35px_rgba(197,168,128,0.25)]'
                       : 'bg-[#0b0b0e] border border-white/10 hover:border-[#c5a880]/50 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.2)]'
@@ -299,7 +316,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
                   {isVip && (
                     <div className="absolute -top-3.5 right-6 px-3.5 py-1 bg-[#c5a880] text-black text-[10px] uppercase font-mono tracking-widest font-extrabold shadow-md flex items-center gap-1.5">
                       <Sparkles className="w-3 h-3 text-black" />
-                      <span>Most Popular</span>
+                      <span>{plan.badge || 'Most Popular'}</span>
                     </div>
                   )}
 
@@ -322,7 +339,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
                       </h3>
                     </div>
 
-                    {/* Animated Price Figure with AnimatePresence mode="wait" */}
+                    {/* Animated Price Figure */}
                     <div className="pb-5 border-b border-white/[0.08] mb-5">
                       <AnimatePresence mode="wait">
                         <motion.div
@@ -357,7 +374,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
 
                       <p className="text-xs text-gray-400 font-light mt-3 leading-relaxed line-clamp-2">
                         {plan.description ||
-                          'Elite physical conditioning program with complete facility privileges at Joshiyara Road HQ.'}
+                          'Complete facility access with strength machines and dedicated guidance at Joshiyara Road HQ.'}
                       </p>
                     </div>
 
@@ -383,7 +400,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
                       type="button"
                       onClick={() => handleInquirePlan(plan, displayedPrice)}
                       whileTap={{ scale: 0.98 }}
-                      className={`w-full py-3.5 px-6 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 shadow-sm ${
+                      className={`w-full py-3.5 px-6 font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 shadow-sm cursor-pointer ${
                         isVip
                           ? 'bg-[#c5a880] hover:bg-white text-black font-bold shadow-[0_0_20px_rgba(197,168,128,0.3)]'
                           : 'bg-white hover:bg-[#c5a880] text-black hover:text-black'
@@ -450,10 +467,10 @@ export default function PricingSection({ plans: propPlans } = {}) {
         <div className="p-4 bg-[#0b0b0e] border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-gray-400">
           <div className="flex items-center gap-2 text-zinc-300 font-sans">
             <ShieldCheck className="w-4 h-4 text-[#c5a880]" />
-            <span>Guaranteed zero hidden registration or maintenance fees. All memberships include GST tax invoices.</span>
+            <span>Zero hidden admission or registration fees • Direct enrollment at Joshiyara Road HQ</span>
           </div>
-          <span className="font-mono text-[11px] text-[#a07e4d] dark:text-[#c5a880]">
-            Immediate Biometric Activation at HQ
+          <span className="font-mono text-[11px] text-[#a07e4d] dark:text-[#c5a880] font-semibold">
+            Free Trial Floor Visit Available
           </span>
         </div>
       </div>

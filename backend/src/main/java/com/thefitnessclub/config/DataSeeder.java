@@ -51,8 +51,8 @@ public class DataSeeder implements CommandLineRunner {
                 true,
                 null,
                 false,
-                "Full Sanctum & Heavy Iron Access, Biometric RFID Access, Locker & Shower Facilities",
-                "Flexible month-to-month commitment for dedicated lifters.",
+                "Full Gym Floor & Free Weights Access, Strength Machines & Lifting Zone, Floor Trainer Form Guidance, Dedicated Changing & Bag Storage Area",
+                "Flexible month-to-month gym access with hands-on floor guidance and complete free weight privileges.",
                 1
         ));
 
@@ -67,8 +67,8 @@ public class DataSeeder implements CommandLineRunner {
                 true,
                 "Save ₹200",
                 false,
-                "Full Sanctum & Heavy Iron Access, Progressive Overload Tracking, Locker & Shower Facilities",
-                "Quarterly foundation designed for sustained hypertrophy and strength gains.",
+                "Full Gym Floor & Free Weights Access, Custom Workout Split & Routine Plan, Monthly Strength & Progress Check-In, Priority Floor Trainer Support",
+                "Quarterly foundation designed for consistent progressive overload, personalized workout splits, and tangible results.",
                 2
         ));
 
@@ -83,8 +83,8 @@ public class DataSeeder implements CommandLineRunner {
                 true,
                 "Save ₹2,000",
                 true,
-                "Full Sanctum & Heavy Iron Access, Biomechanical Form Reviews, Body Composition Scans, 2 Guest Passes",
-                "The flagship annual membership pass with full sanctum privileges and gold-tier benefits.",
+                "Personalized Diet & Workout Roadmap, Priority 1-on-1 Form Guidance, 10% Pro Shop Discount, 2 Free Guest Day-Passes, 15-Day Travel Freeze",
+                "The definitive all-access VIP pass with comprehensive coaching roadmaps, pro shop savings, and membership freeze options.",
                 3
         ));
     }

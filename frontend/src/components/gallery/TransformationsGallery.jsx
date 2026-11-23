@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Sparkles, ArrowRight, Award } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Sparkles, ArrowRight, Award, Maximize2, X } from 'lucide-react';
 
-// Comprehensive array of 15+ curated Transformations
+// Comprehensive array of 12+ curated Transformations
 const DEFAULT_TRANSFORMATIONS = [
   {
     id: 1,
@@ -150,9 +150,13 @@ const DEFAULT_TRANSFORMATIONS = [
   },
 ];
 
-// Single Transformation Card Component with interactive Before/After toggle and spring hover pop
-function TransformationCardItem({ item, index }) {
+// Single Transformation Card with unobstructed top photo stage & solid structured info footer
+function TransformationCardItem({ item, index, onOpenLightbox }) {
   const [viewState, setViewState] = useState('after'); // 'before' | 'after'
+
+  const currentImage = viewState === 'after'
+    ? (item.afterImage || item.beforeImage)
+    : (item.beforeImage || item.afterImage);
 
   return (
     <motion.div
@@ -164,39 +168,38 @@ function TransformationCardItem({ item, index }) {
       style={{ touchAction: 'pan-x pan-y' }}
     >
       <motion.div
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ y: -6 }}
         transition={{ type: 'spring', stiffness: 240, damping: 20 }}
-        className="group relative w-full h-[470px] sm:h-[500px] overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col justify-between"
+        className="group relative w-full overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col"
       >
-        {/* Visual Image Stage */}
-        <div className="relative w-full h-full overflow-hidden bg-black">
+        {/* ================= TOP PHOTO STAGE (Unobstructed, High Clarity) ================= */}
+        <div
+          onClick={() => onOpenLightbox(item)}
+          className="relative w-full h-[340px] sm:h-[380px] overflow-hidden bg-black cursor-pointer"
+        >
           <AnimatePresence mode="wait">
             <motion.img
               key={viewState}
-              src={viewState === 'after' ? item.afterImage : item.beforeImage}
+              src={currentImage}
               alt={`${item.name} - ${viewState}`}
               loading="lazy"
-              initial={{ opacity: 0.5, scale: 1.02 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0.6 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0.4 }}
-              transition={{ duration: 0.35 }}
-              className="w-full h-full object-cover object-top filter contrast-[1.08] group-hover:contrast-[1.12] transition-all duration-500"
+              transition={{ duration: 0.25 }}
+              className="w-full h-full object-cover object-top filter contrast-[1.05] group-hover:scale-105 transition-transform duration-500"
             />
           </AnimatePresence>
 
-          {/* Luxury Cinematic Vignette Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent pointer-events-none" />
-
-          {/* Interactive Before / After Pill Switcher (Top Left) */}
-          <div className="absolute top-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-xl border border-white/15 p-0.5 shadow-lg">
+          {/* Sleek, Compact Before / After Glass Pill Switcher (Top Left) */}
+          <div
+            className="absolute top-3.5 left-3.5 z-20 flex items-center bg-black/75 backdrop-blur-md border border-white/15 p-0.5 shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setViewState('before');
-              }}
-              className={`px-3 py-1 text-[10px] uppercase tracking-widest font-mono font-bold transition-all duration-200 ${
+              onClick={() => setViewState('before')}
+              className={`px-3 py-1 text-[10px] uppercase tracking-wider font-mono font-bold transition-all ${
                 viewState === 'before'
                   ? 'bg-white text-black shadow-sm'
                   : 'text-gray-400 hover:text-white'
@@ -206,11 +209,8 @@ function TransformationCardItem({ item, index }) {
             </button>
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setViewState('after');
-              }}
-              className={`px-3 py-1 text-[10px] uppercase tracking-widest font-mono font-bold transition-all duration-200 ${
+              onClick={() => setViewState('after')}
+              className={`px-3 py-1 text-[10px] uppercase tracking-wider font-mono font-bold transition-all ${
                 viewState === 'after'
                   ? 'bg-[#c5a880] text-black shadow-sm'
                   : 'text-gray-400 hover:text-white'
@@ -220,48 +220,79 @@ function TransformationCardItem({ item, index }) {
             </button>
           </div>
 
-          {/* Duration Badge (Top Right) */}
-          <div className="absolute top-4 right-4 z-20 px-3 py-1 bg-black/80 backdrop-blur-md border border-[#c5a880]/30 text-[10px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold shadow-lg">
-            {item.duration || '24 Weeks'}
+          {/* Top Right Duration Pill & Expand Lightbox Button */}
+          <div
+            className="absolute top-3.5 right-3.5 z-20 flex items-center gap-1.5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="px-2.5 py-1 bg-black/75 backdrop-blur-md border border-[#c5a880]/30 text-[10px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold shadow-lg">
+              {item.duration || '12 Weeks'}
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenLightbox(item)}
+              title="Full View / Lightbox"
+              aria-label="View Full Photos"
+              className="w-7 h-7 bg-black/75 backdrop-blur-md border border-white/20 hover:border-[#c5a880] text-white hover:text-[#c5a880] flex items-center justify-center transition-colors shadow-lg cursor-pointer"
+            >
+              <Maximize2 className="w-3.5 h-3.5" />
+            </button>
           </div>
+        </div>
 
-          {/* Bottom Information Card Overlay */}
-          <div className="absolute bottom-0 inset-x-0 p-5 sm:p-6 z-20 space-y-3 bg-gradient-to-t from-black via-black/85 to-transparent">
-            <div>
-              <span className="text-[10px] uppercase tracking-ultra text-[#c5a880] font-bold block mb-1 font-sans">
-                {item.category || 'Physical Transformation'}
+        {/* ================= STRUCTURED INFO FOOTER (Solid #0e0e12 Surface) ================= */}
+        <div className="p-5 sm:p-6 bg-[#0e0e12] border-t border-white/[0.08] flex flex-col justify-between space-y-3.5">
+          <div>
+            {item.category && (
+              <span className="text-[10px] uppercase tracking-ultra text-[#c5a880] font-bold block mb-1 font-sans truncate">
+                {item.category}
               </span>
-              <div className="flex items-baseline justify-between gap-2">
-                <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white font-display truncate">
-                  {item.name}
-                </h3>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-[#c5a880]/15 text-[#e5c99e] border border-[#c5a880]/30 shrink-0">
+            )}
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-white font-display truncate">
+                {item.name}
+              </h3>
+              {item.achievement && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider bg-[#c5a880]/15 text-[#e5c99e] border border-[#c5a880]/30 shrink-0">
                   <Award className="w-3 h-3 text-[#c5a880]" />
                   {item.achievement}
                 </span>
-              </div>
-            </div>
-
-            {/* Key Transformation Metrics Strip */}
-            <div className="pt-2.5 border-t border-white/[0.1] grid grid-cols-2 gap-3 text-xs">
-              <div>
-                <span className="text-[9px] uppercase tracking-wider text-gray-400 block font-mono">
-                  Scale Delta
-                </span>
-                <span className="text-white font-semibold font-mono text-[11px]">
-                  {item.weightChange || 'Weight Optimized'}
-                </span>
-              </div>
-              <div className="text-right">
-                <span className="text-[9px] uppercase tracking-wider text-gray-400 block font-mono">
-                  Body Fat Shift
-                </span>
-                <span className="text-emerald-400 font-semibold font-mono text-[11px]">
-                  {item.bodyFat || 'Peak Aesthetic'}
-                </span>
-              </div>
+              )}
             </div>
           </div>
+
+          {/* Clean 2-column stats bar - ONLY render each stat if the value exists! */}
+          {(Boolean(item.weightChange) || Boolean(item.bodyFat)) && (
+            <div className="pt-2.5 border-t border-white/[0.08] grid grid-cols-2 gap-3 text-xs">
+              {item.weightChange ? (
+                <div>
+                  <span className="text-[9px] uppercase tracking-wider text-gray-400 block font-mono">
+                    Weight Change
+                  </span>
+                  <span className="text-white font-semibold font-mono text-[11px]">
+                    {item.weightChange}
+                  </span>
+                </div>
+              ) : <div />}
+
+              {item.bodyFat ? (
+                <div className="text-right">
+                  <span className="text-[9px] uppercase tracking-wider text-gray-400 block font-mono">
+                    Body Fat Shift
+                  </span>
+                  <span className="text-emerald-400 font-semibold font-mono text-[11px]">
+                    {item.bodyFat}
+                  </span>
+                </div>
+              ) : <div />}
+            </div>
+          )}
+
+          {item.quote && (
+            <p className="text-[11px] text-gray-400 font-light italic leading-relaxed line-clamp-2 pt-1 border-t border-white/[0.04]">
+              "{item.quote}"
+            </p>
+          )}
         </div>
       </motion.div>
     </motion.div>
@@ -274,6 +305,7 @@ export default function TransformationsGallery({ items = [] }) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [lightboxItem, setLightboxItem] = useState(null);
 
   const allTransformations = items && items.length > 0 ? items : DEFAULT_TRANSFORMATIONS;
 
@@ -311,8 +343,6 @@ export default function TransformationsGallery({ items = [] }) {
 
   return (
     <section id="transformations" className="py-24 sm:py-32 relative bg-black overflow-hidden selection:bg-[#c5a880] selection:text-black">
-
-
       {/* Ambient Lighting Spheres */}
       <div className="absolute top-1/3 -left-40 w-96 h-96 bg-[#c5a880]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-80 h-80 bg-[#a07e4d]/10 rounded-full blur-[120px] pointer-events-none" />
@@ -352,7 +382,7 @@ export default function TransformationsGallery({ items = [] }) {
                 onClick={() => handleScroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Scroll Left"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -361,7 +391,7 @@ export default function TransformationsGallery({ items = [] }) {
                 onClick={() => handleScroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Scroll Right"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -383,7 +413,12 @@ export default function TransformationsGallery({ items = [] }) {
           }}
         >
           {allTransformations.map((item, index) => (
-            <TransformationCardItem key={item._id || item.id || index} item={item} index={index} />
+            <TransformationCardItem
+              key={item._id || item.id || index}
+              item={item}
+              index={index}
+              onOpenLightbox={(selected) => setLightboxItem(selected)}
+            />
           ))}
 
           {/* End-of-Gallery Prompt Card */}
@@ -427,6 +462,126 @@ export default function TransformationsGallery({ items = [] }) {
           <span className="hidden sm:inline">Use Mouse Wheel / Arrow Keys / Click Chevrons</span>
         </div>
       </div>
+
+      {/* ==================== 4. FULL-VIEW LIGHTBOX MODAL ==================== */}
+      <AnimatePresence>
+        {lightboxItem && (
+          <div
+            className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+            onClick={() => setLightboxItem(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl w-full bg-[#0b0b0e] border border-[#c5a880]/50 shadow-2xl overflow-hidden flex flex-col max-h-[92vh] my-auto"
+            >
+              {/* Lightbox Header */}
+              <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between shrink-0 bg-[#0e0e12]">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#c5a880] font-bold">
+                      VERIFIED ATHLETE SPOTLIGHT
+                    </span>
+                    {lightboxItem.duration && (
+                      <span className="px-2 py-0.5 text-[9px] font-mono uppercase bg-white/10 text-gray-300 font-semibold">
+                        {lightboxItem.duration}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white font-display mt-0.5">
+                    {lightboxItem.name}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setLightboxItem(null)}
+                  className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Side-by-Side Photos Stage */}
+              <div className="p-4 sm:p-6 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-black">
+                {/* Before Photo */}
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-gray-400">
+                      Phase 1 — Starting Baseline
+                    </span>
+                  </div>
+                  <div className="relative aspect-[3/4] bg-[#0b0b0e] border border-white/10 overflow-hidden flex items-center justify-center">
+                    {lightboxItem.beforeImage ? (
+                      <img
+                        src={lightboxItem.beforeImage}
+                        alt={`${lightboxItem.name} Before`}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-600 font-mono">No before photo available</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* After Photo */}
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#c5a880]">
+                      Phase 2 — Documented Result
+                    </span>
+                  </div>
+                  <div className="relative aspect-[3/4] bg-[#0b0b0e] border border-[#c5a880]/40 overflow-hidden flex items-center justify-center shadow-[0_0_25px_rgba(197,168,128,0.2)]">
+                    {lightboxItem.afterImage ? (
+                      <img
+                        src={lightboxItem.afterImage}
+                        alt={`${lightboxItem.name} After`}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-600 font-mono">No after photo available</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Lightbox Footer Stats */}
+              <div className="p-4 sm:p-5 border-t border-white/10 bg-[#0e0e12] flex flex-wrap items-center justify-between gap-4 shrink-0">
+                <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
+                  {lightboxItem.achievement && (
+                    <div className="flex items-center gap-1.5 text-[#e5c99e]">
+                      <Award className="w-4 h-4 text-[#c5a880]" />
+                      <span className="font-bold">{lightboxItem.achievement}</span>
+                    </div>
+                  )}
+                  {lightboxItem.weightChange && (
+                    <div className="text-gray-300">
+                      <span className="text-gray-500 mr-1.5 font-normal">WEIGHT:</span>
+                      <span className="font-semibold text-white">{lightboxItem.weightChange}</span>
+                    </div>
+                  )}
+                  {lightboxItem.bodyFat && (
+                    <div className="text-emerald-400">
+                      <span className="text-gray-500 mr-1.5 font-normal">BODY FAT:</span>
+                      <span className="font-semibold">{lightboxItem.bodyFat}</span>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setLightboxItem(null)}
+                  className="px-5 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-mono uppercase tracking-wider transition-colors ml-auto cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -15,8 +15,9 @@ export const PLANS_DATA = [
     tier: 'MONTHLY_STANDARD',
     isActive: true,
     badge: null,
-    featuresSummary: 'General Gym Floor & Free Weights Access',
-    description: 'Ideal for focused athletes seeking uncompromising strength and free-weight access.',
+    isPopular: false,
+    featuresSummary: 'Full Gym Floor & Free Weights Access, Strength Machines & Lifting Zone, Floor Trainer Form Guidance, Dedicated Changing & Bag Storage Area',
+    description: 'Flexible month-to-month gym access with hands-on floor guidance and complete free weight privileges.',
   },
   {
     id: 'quarterly-pro',
@@ -29,8 +30,9 @@ export const PLANS_DATA = [
     tier: 'QUARTERLY_STRENGTH',
     isActive: true,
     badge: 'Save ₹200',
-    featuresSummary: 'Strength & Olympic Deck Peak Access',
-    description: 'Our most balanced package for sustained progressive overload and body recomposition.',
+    isPopular: false,
+    featuresSummary: 'Full Gym Floor & Free Weights Access, Custom Workout Split & Routine Plan, Monthly Strength & Progress Check-In, Priority Floor Trainer Support',
+    description: 'Quarterly foundation designed for consistent progressive overload, personalized workout splits, and tangible results.',
   },
   {
     id: 'annual-vip',
@@ -44,8 +46,8 @@ export const PLANS_DATA = [
     isActive: true,
     badge: 'Save ₹2,000',
     isPopular: true,
-    featuresSummary: 'All Access + Personal Locker + Invitational Events',
-    description: 'The definitive commitment for dedicated lifters demanding excellence.',
+    featuresSummary: 'Personalized Diet & Workout Roadmap, Priority 1-on-1 Form Guidance, 10% Pro Shop Discount, 2 Free Guest Day-Passes, 15-Day Travel Freeze',
+    description: 'The definitive all-access VIP pass with comprehensive coaching roadmaps, pro shop savings, and membership freeze options.',
   },
 ];
 
