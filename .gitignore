@@ -1,0 +1,56 @@
+# =============================================================================
+# THE FITNESS CLUB - ROOT GITIGNORE
+# =============================================================================
+
+# Operating System & IDE Files
+.DS_Store
+**/.DS_Store
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/*.mov
+/Screenshot*.png
+
+# Environment Secrets & Credentials
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local Database Files & Cache
+backend/data/
+*.db
+*.mv.db
+*.trace.db
+!frontend/src/data/
+
+# Backend Build & Dependencies (Maven)
+backend/target/
+**/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Frontend Build & Dependencies (Node / Vite)
+frontend/node_modules/
+**/node_modules/
+frontend/dist/
+**/dist/
+dist-ssr/
+*.local
+.vite/
+**/.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
