@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, MapPin, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { BRAND_NAME, PHONE_DISPLAY, PHONE_TEL, EMAIL } from '../../config/siteConfig';
+import { BRAND_NAME, PHONE_DISPLAY, PHONE_TEL, EMAIL, INSTAGRAM_URL } from '../../config/siteConfig';
 
 export default function Footer() {
   return (
@@ -48,6 +48,17 @@ export default function Footer() {
             <li><a href="#transformations" className="hover:text-white transition-colors">Transformations</a></li>
             <li><a href="#events" className="hover:text-white transition-colors">Invitational Events</a></li>
             <li><a href="#products" className="hover:text-white transition-colors">The Pro Shop</a></li>
+            <li>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#c5a880] text-[#e5c99e] transition-colors flex items-center gap-1 font-mono text-[11px]"
+              >
+                <span>@iconicthreads.uk</span>
+                <ArrowUpRight className="w-3 h-3 text-[#c5a880]" />
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -83,7 +94,7 @@ export default function Footer() {
               <a href={`mailto:${EMAIL}`} className="hover:text-[#c5a880] transition-colors">{EMAIL}</a>
             </div>
             <p className="text-[#c5a880] pt-2 text-[11px] uppercase tracking-wider font-medium">
-              Private Biometric Access: 24 / 7 / 365
+              Floor Training Hours: Mon - Sat • Joshiyara Road HQ
             </p>
           </div>
         </div>

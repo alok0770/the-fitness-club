@@ -5,8 +5,9 @@ import {
   ChevronRight,
   ArrowUpRight,
   ShoppingBag,
+  Sparkles,
 } from 'lucide-react';
-import { getWhatsAppUrl } from '../../config/siteConfig';
+import { getWhatsAppUrl, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../../config/siteConfig';
 
 // Comprehensive array of 14+ Curated Pro Shop Products
 const DEFAULT_PRODUCTS = [
@@ -433,17 +434,28 @@ export default function ProductsSection({ products = [] }) {
               Custom Gear Order
             </h3>
             <p className="text-xs text-gray-400 font-light max-w-xs">
-              Need custom weight belts, specialized knee sleeves, or bulk nutrition orders for Joshiyara Road HQ?
+              Need custom weight belts, oversized apparel drops, or bulk nutrition orders for Joshiyara Road HQ?
             </p>
-            <a
-              href={getWhatsAppUrl('Hi The Fitness Club, I would like to place a custom order for pro shop gear.')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#c5a880] text-black text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors"
-            >
-              <span>Speak with Pro Shop</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+            <div className="flex flex-col sm:flex-row items-center gap-2 pt-1 w-full justify-center">
+              <a
+                href={getWhatsAppUrl('Hi The Fitness Club, I would like to place a custom order for pro shop gear.')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#c5a880] text-black text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors w-full sm:w-auto"
+              >
+                <span>WhatsApp</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888] text-white text-xs font-bold uppercase tracking-widest hover:opacity-95 transition-opacity w-full sm:w-auto shadow-[0_0_15px_rgba(220,39,67,0.4)]"
+              >
+                <span>Instagram</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -466,6 +478,137 @@ export default function ProductsSection({ products = [] }) {
           <span className="sm:hidden">← Swipe Horizontally to Explore Products →</span>
           <span className="hidden sm:inline">Use Mouse Wheel / Click Chevrons to Browse Gear</span>
         </div>
+      </div>
+
+      {/* ==================== 4. GLOWING FLOATING INSTAGRAM SHOWCASE ==================== */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 sm:mt-16">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.6 }}
+          className="relative group"
+        >
+          {/* Multi-Layered Instagram Sunrise & Champagne Gold Aura Glow (Floating Pulsing Effect) */}
+          <motion.div
+            animate={{
+              scale: [1, 1.025, 1],
+              opacity: [0.35, 0.6, 0.35],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 3.5,
+              ease: 'easeInOut',
+            }}
+            className="absolute -inset-1.5 bg-gradient-to-r from-[#f09433] via-[#dc2743] via-[#bc1888] to-[#c5a880] rounded-3xl blur-2xl group-hover:opacity-95 transition-opacity duration-700 pointer-events-none"
+          />
+
+          {/* Floating Levitating Interactive Container */}
+          <motion.a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            animate={{ y: [0, -8, 0] }}
+            transition={{
+              repeat: Infinity,
+              duration: 4,
+              ease: 'easeInOut',
+            }}
+            whileHover={{ scale: 1.015, y: -12 }}
+            whileTap={{ scale: 0.985 }}
+            className="relative block w-full bg-gradient-to-br from-[#121217] via-[#0d0d11] to-[#070709] border border-white/15 hover:border-[#c5a880] p-6 sm:p-9 rounded-2xl shadow-[0_15px_50px_rgba(0,0,0,0.85)] overflow-hidden cursor-pointer transition-all duration-300"
+          >
+            {/* Background Decorative Radial Shimmer */}
+            <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-br from-[#dc2743]/20 via-[#bc1888]/20 to-transparent rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-[#c5a880]/15 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+              {/* Left Column: Floating Glowing Instagram Icon + Copy */}
+              <div className="flex flex-col sm:flex-row items-center sm:items-start md:items-center gap-5 sm:gap-6 text-center sm:text-left">
+                {/* 3D Levitating Instagram Badge */}
+                <div className="relative shrink-0">
+                  {/* Outer Pulsing Glow Halo */}
+                  <motion.div
+                    animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.95, 0.6] }}
+                    transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }}
+                    className="absolute -inset-2 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] rounded-2xl blur-lg"
+                  />
+
+                  {/* Main Instagram Gradient Cube */}
+                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] p-[2.5px] shadow-[0_0_35px_rgba(220,39,67,0.65)] flex items-center justify-center transform group-hover:rotate-3 transition-transform duration-300">
+                    <div className="w-full h-full rounded-[14px] bg-[#0b0b0e]/85 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-transparent transition-colors duration-300">
+                      {/* High-Definition Official Instagram Glyphs */}
+                      <svg
+                        className="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.9"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Live Status Pulse Dot */}
+                  <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-black" />
+                  </span>
+                </div>
+
+                {/* Typography & Offerings Details */}
+                <div className="space-y-1.5 max-w-xl">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#c5a880] font-bold">
+                      OFFICIAL PRO SHOP INSTAGRAM
+                    </span>
+                    <span className="px-2.5 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-white/10 text-white rounded-full border border-white/15 font-semibold">
+                      {INSTAGRAM_HANDLE}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-white font-display group-hover:text-[#c5a880] transition-colors">
+                    Iconic Threads <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888]">Pro Shop</span>
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
+                    Exclusive Oversized Streetwear Drops • Hydrolyzed Native Whey • Micronized Creapure Creatine • Heavy Lifting Accessories
+                  </p>
+
+                  <span className="inline-block text-[11px] font-mono text-[#c5a880] pt-0.5">
+                    Tap to view new arrivals, sizing guides & DM orders on Instagram →
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: Floating Magnetic Action Button */}
+              <div className="shrink-0 flex items-center">
+                <div className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888] text-white font-mono text-xs font-bold uppercase tracking-widest flex items-center gap-2.5 shadow-[0_0_30px_rgba(220,39,67,0.55)] group-hover:shadow-[0_0_45px_rgba(220,39,67,0.85)] group-hover:scale-105 transition-all">
+                  <svg
+                    className="w-4 h-4 text-white"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                  <span>Explore Drops</span>
+                  <ArrowUpRight className="w-4 h-4 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );
