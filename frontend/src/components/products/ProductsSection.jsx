@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useMotionTemplate } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
   ArrowUpRight,
   ShoppingBag,
+  Instagram,
 } from 'lucide-react';
 import { getWhatsAppUrl, PRO_SHOP_INSTAGRAM_URL, PRO_SHOP_INSTAGRAM_HANDLE } from '../../config/siteConfig';
 
@@ -310,13 +311,31 @@ export default function ProductsSection({ products = [] }) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [isBannerHovered, setIsBannerHovered] = useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleBannerMouseMove = ({ currentTarget, clientX, clientY }) => {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  };
+
+  const spotlightBackground = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, rgba(197, 168, 128, 0.14), transparent 75%)`;
 
   const allProducts = products && products.length > 0 ? products : DEFAULT_PRODUCTS;
 
-  // Sourcing Lookbook Images for Fan preview
-  const fallbackImages = ['/assets/product-1.jpg', '/assets/product-2.jpg', '/assets/product-3.jpg'];
-  const lookbookImages = [0, 1, 2].map((i) => allProducts[i]?.image || fallbackImages[i]);
+  // Sourcing Lookbook Reel products (duplicated for smooth infinite horizontal loop)
+  const fallbackImages = ['/assets/product-1.jpg', '/assets/product-2.jpg', '/assets/product-3.jpg', '/assets/product-4.jpg'];
+  const fallbackReel = [
+    { name: 'Oversized Pump Cover', price: '₹2,499', image: '/assets/product-3.jpg', category: 'Apparel' },
+    { name: 'Creapure Micronized', price: '₹2,199', image: '/assets/product-4.jpg', category: 'Nutrition' },
+    { name: 'Hydrolyzed Native Whey', price: '₹5,499', image: '/assets/product-1.jpg', category: 'Nutrition' },
+    { name: 'Leather Lever Belt', price: '₹8,999', image: '/assets/product-2.jpg', category: 'Apparel' },
+    { name: 'Heavy French Terry Hoodie', price: '₹4,200', image: '/assets/product-3.jpg', category: 'Apparel' },
+    { name: 'High-Stim Pre-Workout', price: '₹3,499', image: '/assets/product-4.jpg', category: 'Nutrition' },
+  ];
+  const sourceReel = allProducts.length >= 4 ? allProducts.slice(0, 6) : fallbackReel;
+  const marqueeList = [...sourceReel, ...sourceReel];
 
   const categories = ['ALL', 'APPAREL', 'NUTRITION'];
 
@@ -508,147 +527,142 @@ export default function ProductsSection({ products = [] }) {
         </div>
       </div>
 
-      {/* ==================== 4. LUXURY EDITORIAL LOOKBOOK INSTAGRAM BANNER ==================== */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 sm:mt-16">
+      {/* ==================== 4. LUXURY SPOTLIGHT INSTAGRAM BANNER ==================== */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-10 sm:mt-12">
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-          className="relative group"
-          onMouseEnter={() => setIsBannerHovered(true)}
-          onMouseLeave={() => setIsBannerHovered(false)}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5 }}
+          onMouseMove={handleBannerMouseMove}
+          className="relative group bg-[#0c0c10] border border-white/[0.1] hover:border-[#c5a880]/40 rounded-sm py-5 px-5 sm:py-6 sm:px-8 shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden transition-colors duration-500"
         >
-          {/* Subtle Ambient Gold Radial Glow (No loud neon/pink!) */}
-          <div className="absolute -inset-1 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.18)_0%,rgba(197,168,128,0.05)_50%,transparent_80%)] rounded-3xl blur-2xl group-hover:opacity-100 opacity-60 transition-opacity duration-700 pointer-events-none" />
+          {/* Interactive Cursor-Tracking Gold Spotlight (Framer Motion zero re-renders) */}
+          <motion.div
+            className="pointer-events-none absolute -inset-px transition-opacity duration-300 opacity-0 group-hover:opacity-100 z-0"
+            style={{ background: spotlightBackground }}
+          />
 
-          {/* Full-width obsidian card */}
-          <div className="relative w-full bg-gradient-to-br from-[#111116] via-[#0b0b0e] to-[#08080a] border border-[#c5a880]/25 group-hover:border-[#c5a880]/60 p-7 sm:p-10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-500">
-            {/* Subtle background luxury accents */}
-            <div className="absolute -top-24 -left-24 w-72 h-72 bg-[#c5a880]/[0.04] rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-[#c5a880]/[0.05] rounded-full blur-3xl pointer-events-none" />
+          {/* Ambient Gold Hairline Beam (Horizontal Shimmer Sweep) */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] overflow-hidden pointer-events-none z-20">
+            <motion.div
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
+              className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#c5a880] to-transparent"
+            />
+          </div>
 
-            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
-              {/* Left Column (Editorial Copy & CTA) */}
-              <div className="flex-1 space-y-4 text-center lg:text-left">
-                {/* Subtle gold eyebrow pill with clean monochrome Instagram icon */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/[0.04] border border-[#c5a880]/30 rounded-full">
-                  <svg
-                    className="w-3.5 h-3.5 text-[#c5a880]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                  </svg>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#e5c99e] font-semibold">
-                    OFFICIAL PRO SHOP • @ICONICTHREADS.UK
-                  </span>
-                </div>
+          {/* Subtle Ambient Radial Backdrops */}
+          <div className="absolute -top-16 -left-16 w-56 h-56 bg-[#c5a880]/[0.05] rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -right-16 w-56 h-56 bg-[#c5a880]/[0.05] rounded-full blur-3xl pointer-events-none" />
 
-                <div className="space-y-1">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-display">
-                    ICONIC THREADS
-                  </h3>
-                  <p className="text-xs sm:text-sm font-mono tracking-widest text-[#c5a880] uppercase font-semibold">
-                    CURATED DROPS & NUTRITION
-                  </p>
-                </div>
+          {/* 12-Column Architectural Zero Dead Space Grid */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+            {/* Left Column (Editorial Copy & Magnetic Shimmer CTA) */}
+            <div className="lg:col-span-6 space-y-3 sm:space-y-3.5 text-left">
+              {/* Monospace Eyebrow with Pulsing Gold Dot */}
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 bg-white/[0.04] border border-[#c5a880]/30 rounded-full w-fit">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#c5a880] animate-pulse" />
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#e5c99e] font-semibold">
+                  OFFICIAL PRO SHOP • @ICONICTHREADS.UK
+                </span>
+              </div>
 
-                <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed max-w-xl">
-                  Oversized gym streetwear, verified supplements & heavy lifting gear — daily drops and direct DM orders.
+              {/* Compact Headline & Hook */}
+              <div className="space-y-1">
+                <h3 className="text-2xl sm:text-3xl font-display font-black uppercase tracking-tight text-white leading-none">
+                  ICONIC THREADS <span className="text-[#c5a880] font-light">/ DROPS</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-400 max-w-md font-light leading-relaxed">
+                  Limited oversized drops, verified supplements &amp; heavy lifting gear — DM directly on Instagram.
                 </p>
+              </div>
 
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                  <a
+              {/* Magnetic Shimmer CTA Row */}
+              <div className="pt-0.5 flex flex-wrap items-center gap-3.5 sm:gap-4">
+                <a
+                  href={PRO_SHOP_INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c5a880] hover:bg-white text-black text-xs font-bold uppercase tracking-widest relative overflow-hidden group/cta transition-all duration-300 shadow-[0_0_20px_rgba(197,168,128,0.22)] hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] cursor-pointer"
+                >
+                  {/* Sleek periodic diagonal light sheen sweep */}
+                  <motion.div
+                    animate={{ x: ['-120%', '220%'] }}
+                    transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', repeatDelay: 1.5 }}
+                    className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12 pointer-events-none"
+                  />
+                  <Instagram className="w-3.5 h-3.5 text-black shrink-0 relative z-10" />
+                  <span className="relative z-10 font-bold">FOLLOW &amp; SHOP DROPS</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-black transition-transform duration-300 group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5 shrink-0 relative z-10" />
+                </a>
+
+                <span className="text-[11px] font-mono text-gray-500">
+                  Daily Restocks • Direct DM Orders
+                </span>
+              </div>
+            </div>
+
+            {/* Right Column (Kinetic Auto-Gliding Lookbook Reel) */}
+            <div className="lg:col-span-6 w-full relative overflow-hidden py-1">
+              {/* Left & Right Vantablack Edge Fades */}
+              <div className="absolute top-0 bottom-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-[#0c0c10] via-[#0c0c10]/70 to-transparent z-10 pointer-events-none" />
+              <div className="absolute top-0 bottom-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-[#0c0c10] via-[#0c0c10]/70 to-transparent z-10 pointer-events-none" />
+
+              {/* Infinite Filmstrip Reel */}
+              <motion.div
+                animate={{ x: ['0%', '-50%'] }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    duration: 22,
+                    ease: 'linear',
+                  },
+                }}
+                className="flex items-center gap-3 w-max"
+              >
+                {marqueeList.map((item, idx) => (
+                  <motion.a
+                    key={`${item.id || item.name}-${idx}`}
                     href={PRO_SHOP_INSTAGRAM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#c5a880] hover:bg-white text-black font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-[0_0_20px_rgba(197,168,128,0.25)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] cursor-pointer"
+                    whileHover={{ y: -4, scale: 1.04 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="group/tile relative w-24 h-28 sm:w-28 sm:h-32 md:w-32 md:h-36 shrink-0 bg-[#0e0e13] border border-white/10 hover:border-[#c5a880] rounded-sm overflow-hidden flex flex-col justify-between p-1.5 transition-colors duration-200 cursor-pointer shadow-lg"
                   >
-                    <span>VIEW ON INSTAGRAM</span>
-                    <ArrowUpRight className="w-4 h-4 text-black" />
-                  </a>
-
-                  <span className="text-[11px] font-mono text-gray-400">
-                    Direct Orders via Instagram DM
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column (Animated 3-Card Lookbook Fan) */}
-              <div className="relative w-full lg:w-auto flex items-center justify-center py-6 sm:py-8 lg:py-0 px-4">
-                <div className="relative w-64 sm:w-72 md:w-80 h-52 sm:h-60 flex items-center justify-center">
-                  {/* Card 0 (Left Fan Card) */}
-                  <motion.div
-                    animate={
-                      isBannerHovered
-                        ? { x: -65, y: -4, rotate: -10, scale: 0.95 }
-                        : { x: -35, y: 6, rotate: -6, scale: 0.9 }
-                    }
-                    transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                    className="absolute w-32 sm:w-36 md:w-40 aspect-[4/5] rounded-xl bg-[#0e0e12] border border-[#c5a880]/30 shadow-2xl overflow-hidden p-2 flex items-center justify-center z-10 pointer-events-none"
-                  >
-                    <div className="w-full h-full rounded-lg bg-black/60 overflow-hidden flex items-center justify-center">
+                    {/* Product Image Stage */}
+                    <div className="relative w-full flex-1 rounded-sm overflow-hidden bg-black/60 flex items-center justify-center">
                       <img
-                        src={lookbookImages[0]}
-                        alt="Lookbook 1"
-                        className="w-full h-full object-contain filter contrast-[1.04]"
+                        src={item.image || fallbackImages[idx % fallbackImages.length]}
+                        alt={item.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover/tile:scale-110 filter contrast-[1.05]"
+                        loading="lazy"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
                     </div>
-                  </motion.div>
 
-                  {/* Card 2 (Right Fan Card) */}
-                  <motion.div
-                    animate={
-                      isBannerHovered
-                        ? { x: 65, y: -4, rotate: 10, scale: 0.95 }
-                        : { x: 35, y: 6, rotate: 6, scale: 0.9 }
-                    }
-                    transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                    className="absolute w-32 sm:w-36 md:w-40 aspect-[4/5] rounded-xl bg-[#0e0e12] border border-[#c5a880]/30 shadow-2xl overflow-hidden p-2 flex items-center justify-center z-10 pointer-events-none"
-                  >
-                    <div className="w-full h-full rounded-lg bg-black/60 overflow-hidden flex items-center justify-center">
-                      <img
-                        src={lookbookImages[2]}
-                        alt="Lookbook 3"
-                        className="w-full h-full object-contain filter contrast-[1.04]"
-                      />
-                    </div>
-                  </motion.div>
-
-                  {/* Card 1 (Center Front Card with Idle Float) */}
-                  <motion.div
-                    animate={
-                      isBannerHovered
-                        ? { y: -12, scale: 1.05, rotate: 0 }
-                        : { y: [0, -6, 0], scale: 1, rotate: 0 }
-                    }
-                    transition={
-                      isBannerHovered
-                        ? { type: 'spring', stiffness: 220, damping: 22 }
-                        : { repeat: Infinity, duration: 3.5, ease: 'easeInOut' }
-                    }
-                    className="relative w-36 sm:w-40 md:w-44 aspect-[4/5] rounded-xl bg-[#14141a] border border-[#c5a880]/60 shadow-[0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden p-2.5 flex flex-col justify-between z-20"
-                  >
-                    <div className="w-full flex-1 rounded-lg bg-black/70 overflow-hidden flex items-center justify-center relative">
-                      <img
-                        src={lookbookImages[1]}
-                        alt="Lookbook 2"
-                        className="w-full h-full object-contain filter contrast-[1.06]"
-                      />
-                    </div>
-                    <div className="mt-2 py-0.5 px-2 bg-black/80 backdrop-blur-md border border-[#c5a880]/30 text-center rounded">
-                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold truncate block">
-                        @iconicthreads.uk
+                    {/* Micro Bottom Spec Tag */}
+                    <div className="mt-1 flex items-center justify-between px-1">
+                      <span className="text-[9px] font-mono font-bold text-[#c5a880] truncate">
+                        {formatPrice(item.price)}
+                      </span>
+                      <span className="text-[8px] font-mono uppercase tracking-wider text-gray-400 truncate max-w-[55px]">
+                        {item.category || 'Gear'}
                       </span>
                     </div>
-                  </motion.div>
+                  </motion.a>
+                ))}
+              </motion.div>
+
+              {/* Floating Glass Pill */}
+              <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 z-20 pointer-events-none">
+                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-black/85 backdrop-blur-md border border-[#c5a880]/30 rounded-full shadow-lg">
+                  <Instagram className="w-3 h-3 text-[#c5a880]" />
+                  <span className="text-[9px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold">
+                    @iconicthreads.uk • Live Feed
+                  </span>
                 </div>
               </div>
             </div>
