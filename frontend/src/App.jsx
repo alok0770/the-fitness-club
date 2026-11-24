@@ -31,16 +31,16 @@ function getInitialCmsData() {
     if (cached) {
       const parsed = JSON.parse(cached);
       return {
-        transformations: (parsed.transformations && parsed.transformations.length > 0)
+        transformations: Array.isArray(parsed.transformations)
           ? parsed.transformations
           : transformationsData,
-        events: (parsed.events && parsed.events.length > 0)
+        events: Array.isArray(parsed.events)
           ? parsed.events
           : eventsData,
-        products: (parsed.products && parsed.products.length > 0)
+        products: Array.isArray(parsed.products)
           ? parsed.products
           : productsData,
-        plans: (parsed.plans && parsed.plans.length > 0)
+        plans: Array.isArray(parsed.plans)
           ? parsed.plans
           : PLANS_DATA,
       };
@@ -77,16 +77,16 @@ function PublicWebsite() {
 
         setCmsData((prev) => {
           const updated = {
-            transformations: (data.transformations && data.transformations.length > 0)
+            transformations: Array.isArray(data.transformations)
               ? data.transformations
               : prev.transformations,
-            events: (data.events && data.events.length > 0)
+            events: Array.isArray(data.events)
               ? data.events
               : prev.events,
-            products: (data.products && data.products.length > 0)
+            products: Array.isArray(data.products)
               ? data.products
               : prev.products,
-            plans: (data.plans && data.plans.length > 0)
+            plans: Array.isArray(data.plans)
               ? data.plans
               : prev.plans,
           };

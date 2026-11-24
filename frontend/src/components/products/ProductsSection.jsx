@@ -322,20 +322,27 @@ export default function ProductsSection({ products = [] }) {
 
   const spotlightBackground = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, rgba(197, 168, 128, 0.14), transparent 75%)`;
 
-  const allProducts = products && products.length > 0 ? products : DEFAULT_PRODUCTS;
+  // Distinguish between live CMS array (even if empty []) and cold-start fallback (undefined/null)
+  const allProducts = Array.isArray(products) ? products : DEFAULT_PRODUCTS;
 
-  // Sourcing Lookbook Reel products (duplicated for smooth infinite horizontal loop)
-  const fallbackImages = ['/assets/product-1.jpg', '/assets/product-2.jpg', '/assets/product-3.jpg', '/assets/product-4.jpg'];
-  const fallbackReel = [
-    { name: 'Oversized Pump Cover', price: '₹2,499', image: '/assets/product-3.jpg', category: 'Apparel' },
-    { name: 'Creapure Micronized', price: '₹2,199', image: '/assets/product-4.jpg', category: 'Nutrition' },
-    { name: 'Hydrolyzed Native Whey', price: '₹5,499', image: '/assets/product-1.jpg', category: 'Nutrition' },
-    { name: 'Leather Lever Belt', price: '₹8,999', image: '/assets/product-2.jpg', category: 'Apparel' },
-    { name: 'Heavy French Terry Hoodie', price: '₹4,200', image: '/assets/product-3.jpg', category: 'Apparel' },
-    { name: 'High-Stim Pre-Workout', price: '₹3,499', image: '/assets/product-4.jpg', category: 'Nutrition' },
-  ];
-  const sourceReel = allProducts.length >= 4 ? allProducts.slice(0, 6) : fallbackReel;
-  const marqueeList = [...sourceReel, ...sourceReel];
+  // Derive Lookbook Reel strictly from live products prop (never mix in stock/fallback photos)
+  const liveReelItems = (Array.isArray(products) ? products : allProducts).filter(
+    (p) => p && p.image && typeof p.image === 'string' && p.image.trim().length > 0
+  );
+
+  // Seamless Dynamic Infinite Marquee tiling math for ANY item count (1 to 50+ items)
+  const MIN_TILES_PER_HALF = 6;
+  const repeatCount = liveReelItems.length > 0
+    ? Math.max(1, Math.ceil(MIN_TILES_PER_HALF / liveReelItems.length))
+    : 0;
+  const baseTrack = Array.from({ length: repeatCount }, () => liveReelItems).flat();
+  const marqueeItems = [...baseTrack, ...baseTrack]; // Exact 2 identical halves for -50% seamless loop
+
+  const trackKey = liveReelItems
+    .map((p) => `${p.id || p._id || ''}-${p.name || ''}-${p.price || ''}-${p.image || ''}`)
+    .join('|');
+
+  const marqueeDuration = Math.max(16, baseTrack.length * 3.5);
 
   const categories = ['ALL', 'APPAREL', 'NUTRITION'];
 
@@ -603,68 +610,102 @@ export default function ProductsSection({ products = [] }) {
               </div>
             </div>
 
-            {/* Right Column (Kinetic Auto-Gliding Lookbook Reel) */}
+            {/* Right Column (Kinetic Auto-Gliding Lookbook Reel or Zero-Item Placeholder) */}
             <div className="lg:col-span-6 w-full relative overflow-hidden py-1">
-              {/* Left & Right Vantablack Edge Fades */}
-              <div className="absolute top-0 bottom-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-[#0c0c10] via-[#0c0c10]/70 to-transparent z-10 pointer-events-none" />
-              <div className="absolute top-0 bottom-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-[#0c0c10] via-[#0c0c10]/70 to-transparent z-10 pointer-events-none" />
-
-              {/* Infinite Filmstrip Reel */}
-              <motion.div
-                animate={{ x: ['0%', '-50%'] }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    repeatType: 'loop',
-                    duration: 22,
-                    ease: 'linear',
-                  },
-                }}
-                className="flex items-center gap-3 w-max"
-              >
-                {marqueeList.map((item, idx) => (
-                  <motion.a
-                    key={`${item.id || item.name}-${idx}`}
+              {liveReelItems.length === 0 ? (
+                /* 0-Item Edge Case: Minimal Dark-Glass Placeholder */
+                <div className="w-full h-full min-h-[140px] flex items-center justify-center p-2">
+                  <a
                     href={PRO_SHOP_INSTAGRAM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -4, scale: 1.04 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className="group/tile relative w-24 h-28 sm:w-28 sm:h-32 md:w-32 md:h-36 shrink-0 bg-[#0e0e13] border border-white/10 hover:border-[#c5a880] rounded-sm overflow-hidden flex flex-col justify-between p-1.5 transition-colors duration-200 cursor-pointer shadow-lg"
+                    className="group/empty flex flex-col sm:flex-row items-center justify-between gap-3 p-4 sm:p-5 bg-[#0e0e13]/90 border border-white/10 hover:border-[#c5a880]/60 rounded-sm transition-all duration-300 w-full shadow-lg"
                   >
-                    {/* Product Image Stage */}
-                    <div className="relative w-full flex-1 rounded-sm overflow-hidden bg-black/60 flex items-center justify-center">
-                      <img
-                        src={item.image || fallbackImages[idx % fallbackImages.length]}
-                        alt={item.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover/tile:scale-110 filter contrast-[1.05]"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
-                    </div>
-
-                    {/* Micro Bottom Spec Tag */}
-                    <div className="mt-1 flex items-center justify-between px-1">
-                      <span className="text-[9px] font-mono font-bold text-[#c5a880] truncate">
-                        {formatPrice(item.price)}
-                      </span>
-                      <span className="text-[8px] font-mono uppercase tracking-wider text-gray-400 truncate max-w-[55px]">
-                        {item.category || 'Gear'}
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-2 h-2 rounded-full bg-[#c5a880] animate-pulse shrink-0" />
+                      <span className="text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] text-[#e5c99e] font-semibold text-left">
+                        NEW DROPS LIVE ON @ICONICTHREADS.UK
                       </span>
                     </div>
-                  </motion.a>
-                ))}
-              </motion.div>
-
-              {/* Floating Glass Pill */}
-              <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 z-20 pointer-events-none">
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-black/85 backdrop-blur-md border border-[#c5a880]/30 rounded-full shadow-lg">
-                  <Instagram className="w-3 h-3 text-[#c5a880]" />
-                  <span className="text-[9px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold">
-                    @iconicthreads.uk • Live Feed
-                  </span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-gray-400 group-hover/empty:text-white transition-colors shrink-0 font-bold">
+                      <span>TAP TO VIEW FEED</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[#c5a880] transition-transform duration-300 group-hover/empty:translate-x-0.5 group-hover/empty:-translate-y-0.5" />
+                    </span>
+                  </a>
                 </div>
-              </div>
+              ) : (
+                <>
+                  {/* Left & Right Vantablack Edge Fades */}
+                  <div className="absolute top-0 bottom-0 left-0 w-10 sm:w-14 bg-gradient-to-r from-[#0c0c10] via-[#0c0c10]/70 to-transparent z-10 pointer-events-none" />
+                  <div className="absolute top-0 bottom-0 right-0 w-10 sm:w-14 bg-gradient-to-l from-[#0c0c10] via-[#0c0c10]/70 to-transparent z-10 pointer-events-none" />
+
+                  {/* Clean @keyframes Marquee with hover pause (zero snap back to 0%) */}
+                  <style>{`
+                    @keyframes tfcLookbookMarquee {
+                      0% { transform: translate3d(0, 0, 0); }
+                      100% { transform: translate3d(-50%, 0, 0); }
+                    }
+                  `}</style>
+                  <div
+                    key={trackKey}
+                    className="flex items-center gap-3 w-max hover:[animation-play-state:paused]"
+                    style={{
+                      animation: `tfcLookbookMarquee ${marqueeDuration}s linear infinite`,
+                      willChange: 'transform',
+                    }}
+                  >
+                    {marqueeItems.map((item, idx) => (
+                      <motion.a
+                        key={`${item.id || item._id || 'prod'}-${idx}`}
+                        href={PRO_SHOP_INSTAGRAM_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ y: -4, scale: 1.04 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        className="group/tile relative w-28 h-36 sm:w-32 sm:h-40 shrink-0 bg-[#0d0d12] border border-white/10 hover:border-[#c5a880]/70 rounded-sm overflow-hidden flex flex-col justify-end p-2 transition-colors duration-300 cursor-pointer shadow-lg"
+                      >
+                        {/* Crisp Full-Visibility Product Image */}
+                        <img
+                          src={item.image}
+                          alt={item.name || 'Pro Shop Item'}
+                          className="absolute inset-0 w-full h-full object-cover object-center group-hover/tile:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+
+                        {/* Subtle Bottom Dark Scrim */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none" />
+
+                        {/* Compact Bottom Caption Strip */}
+                        <div className="relative z-10 w-full space-y-0.5">
+                          <p className="text-[11px] sm:text-xs text-white font-medium truncate leading-tight drop-shadow-sm">
+                            {item.name || 'Pro Shop Drop'}
+                          </p>
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-[10px] sm:text-[11px] text-[#c5a880] font-bold">
+                              {formatPrice(item.price)}
+                            </span>
+                            {item.category && (
+                              <span className="text-[8px] font-mono uppercase tracking-wider text-gray-400 truncate max-w-[50px]">
+                                {item.category}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+
+                  {/* Floating Glass Pill */}
+                  <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 z-20 pointer-events-none">
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-black/85 backdrop-blur-md border border-[#c5a880]/30 rounded-full shadow-lg">
+                      <Instagram className="w-3 h-3 text-[#c5a880]" />
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold">
+                        @iconicthreads.uk • Live Feed
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </motion.div>
