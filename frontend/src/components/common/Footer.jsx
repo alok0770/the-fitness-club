@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowUpRight, MapPin, Phone, Mail, Instagram } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import {
   BRAND_NAME,
   PHONE_DISPLAY,
@@ -135,7 +134,6 @@ export default function Footer() {
         <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
           <span className="hover:text-gray-300 transition-colors cursor-default select-none">Privacy Policy</span>
           <span className="hover:text-gray-300 transition-colors cursor-default select-none">Terms of Covenant</span>
-          <Link to="/admin" className="text-gray-600 hover:text-[#c5a880] transition-colors">Owner Sanctum</Link>
           <span className="text-white/20 select-none hidden sm:inline">•</span>
           <a
             href="https://www.instagram.com/alok.xoxx/"
