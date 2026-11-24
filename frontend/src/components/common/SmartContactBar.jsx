@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Phone, MessageCircle, MapPin } from 'lucide-react';
-import { PHONE_TEL, getWhatsAppUrl, MAPS_URL } from '../../config/siteConfig';
+import { Phone, MessageCircle, MapPin, Instagram } from 'lucide-react';
+import { PHONE_TEL, getWhatsAppUrl, MAPS_URL, CLUB_INSTAGRAM_URL } from '../../config/siteConfig';
 
 export default function SmartContactBar() {
   const actions = [
@@ -22,6 +22,15 @@ export default function SmartContactBar() {
       color: 'hover:text-emerald-400',
       hoverGlow: 'hover:shadow-[0_0_15px_rgba(52,211,153,0.4)]',
       ariaLabel: 'Message The Fitness Club on WhatsApp',
+    },
+    {
+      id: 'instagram',
+      label: 'Instagram',
+      icon: Instagram,
+      href: CLUB_INSTAGRAM_URL,
+      color: 'hover:text-[#c5a880]',
+      hoverGlow: 'hover:shadow-[0_0_15px_rgba(197,168,128,0.5)]',
+      ariaLabel: 'Follow The Fitness Club on Instagram (@thefitnessclub_official)',
     },
     {
       id: 'directions',
@@ -51,7 +60,7 @@ export default function SmartContactBar() {
           </span>
         </div>
 
-        {/* 3 Sleek Quick Action Icon-Buttons */}
+        {/* 4 Sleek Quick Action Icon-Buttons */}
         <div className="flex items-center gap-1 sm:gap-1.5">
           {actions.map((action) => {
             const Icon = action.icon;
@@ -67,7 +76,7 @@ export default function SmartContactBar() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.92 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 20 }}
-                className={`p-2 sm:p-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/5 text-gray-300 ${action.color} ${action.hoverGlow} flex items-center justify-center transition-all duration-200`}
+                className={`p-2 sm:p-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-white/5 text-gray-300 ${action.color} ${action.hoverGlow} flex items-center justify-center transition-all duration-200 cursor-pointer`}
               >
                 <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
               </motion.a>

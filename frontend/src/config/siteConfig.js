@@ -11,8 +11,12 @@ export const PHONE_RAW = '918266060510';
 export const PHONE_TEL = 'tel:+918266060510';
 export const EMAIL = 'membership@thefitnessclub.in';
 export const MAPS_URL = 'https://maps.google.com/?q=The+Fitness+Club+Joshiyara+Road+Uttarkashi';
-export const INSTAGRAM_URL = 'https://www.instagram.com/iconicthreads.uk/';
-export const INSTAGRAM_HANDLE = '@iconicthreads.uk';
+export const CLUB_INSTAGRAM_URL = 'https://www.instagram.com/thefitnessclub_official/';
+export const CLUB_INSTAGRAM_HANDLE = '@thefitnessclub_official';
+export const PRO_SHOP_INSTAGRAM_URL = 'https://www.instagram.com/iconicthreads.uk/';
+export const PRO_SHOP_INSTAGRAM_HANDLE = '@iconicthreads.uk';
+export const INSTAGRAM_URL = CLUB_INSTAGRAM_URL;
+export const INSTAGRAM_HANDLE = CLUB_INSTAGRAM_HANDLE;
 
 /**
  * Generate direct WhatsApp deep-link with URL-encoded inquiry message
@@ -33,6 +37,10 @@ export default {
   PHONE_TEL,
   EMAIL,
   MAPS_URL,
+  CLUB_INSTAGRAM_URL,
+  CLUB_INSTAGRAM_HANDLE,
+  PRO_SHOP_INSTAGRAM_URL,
+  PRO_SHOP_INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   INSTAGRAM_HANDLE,
   getWhatsAppUrl,

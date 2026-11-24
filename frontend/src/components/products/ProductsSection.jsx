@@ -6,7 +6,7 @@ import {
   ArrowUpRight,
   ShoppingBag,
 } from 'lucide-react';
-import { getWhatsAppUrl, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../../config/siteConfig';
+import { getWhatsAppUrl, PRO_SHOP_INSTAGRAM_URL, PRO_SHOP_INSTAGRAM_HANDLE } from '../../config/siteConfig';
 
 // Comprehensive array of 14+ Curated Pro Shop Products
 const DEFAULT_PRODUCTS = [
@@ -475,7 +475,7 @@ export default function ProductsSection({ products = [] }) {
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
               <a
-                href={INSTAGRAM_URL}
+                href={PRO_SHOP_INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-black/60 border border-white/20 text-white hover:border-[#c5a880] hover:text-[#c5a880] text-xs font-bold uppercase tracking-widest transition-colors w-full sm:w-auto"
@@ -566,7 +566,7 @@ export default function ProductsSection({ products = [] }) {
 
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                   <a
-                    href={INSTAGRAM_URL}
+                    href={PRO_SHOP_INSTAGRAM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#c5a880] hover:bg-white text-black font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-[0_0_20px_rgba(197,168,128,0.25)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] cursor-pointer"

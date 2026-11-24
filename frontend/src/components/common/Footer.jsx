@@ -1,7 +1,14 @@
 import React from 'react';
-import { ArrowUpRight, MapPin, Phone, Mail } from 'lucide-react';
+import { ArrowUpRight, MapPin, Phone, Mail, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { BRAND_NAME, PHONE_DISPLAY, PHONE_TEL, EMAIL, INSTAGRAM_URL } from '../../config/siteConfig';
+import {
+  BRAND_NAME,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+  EMAIL,
+  CLUB_INSTAGRAM_URL,
+  PRO_SHOP_INSTAGRAM_URL,
+} from '../../config/siteConfig';
 
 export default function Footer() {
   return (
@@ -50,12 +57,23 @@ export default function Footer() {
             <li><a href="#products" className="hover:text-white transition-colors">The Pro Shop</a></li>
             <li>
               <a
-                href={INSTAGRAM_URL}
+                href={CLUB_INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#c5a880] text-[#e5c99e] transition-colors flex items-center gap-1 font-mono text-[11px]"
               >
-                <span>@iconicthreads.uk</span>
+                <span>Club Instagram</span>
+                <ArrowUpRight className="w-3 h-3 text-[#c5a880]" />
+              </a>
+            </li>
+            <li>
+              <a
+                href={PRO_SHOP_INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#c5a880] text-gray-400 transition-colors flex items-center gap-1 font-mono text-[11px]"
+              >
+                <span>Pro Shop (@iconic)</span>
                 <ArrowUpRight className="w-3 h-3 text-[#c5a880]" />
               </a>
             </li>
@@ -92,6 +110,17 @@ export default function Footer() {
             <div className="flex items-center gap-2 text-gray-300">
               <Mail className="w-3.5 h-3.5 text-[#c5a880] shrink-0" />
               <a href={`mailto:${EMAIL}`} className="hover:text-[#c5a880] transition-colors">{EMAIL}</a>
+            </div>
+            <div className="flex items-center gap-2 text-gray-300">
+              <Instagram className="w-3.5 h-3.5 text-[#c5a880] shrink-0" />
+              <a
+                href={CLUB_INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#c5a880] transition-colors font-mono text-[11px] text-[#e5c99e]"
+              >
+                @thefitnessclub_official
+              </a>
             </div>
             <p className="text-[#c5a880] pt-2 text-[11px] uppercase tracking-wider font-medium">
               Floor Training Hours: Mon - Sat • Joshiyara Road HQ
