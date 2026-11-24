@@ -25,7 +25,7 @@ const DEFAULT_PRODUCTS = [
     id: 2,
     name: 'Architect Leather Lever Belt (11mm)',
     edition: '11mm Thickness • Heavy Bridle Leather',
-    category: 'Equipment',
+    category: 'Apparel',
     price: '₹8,999',
     details: 'Full-grain English bridle leather with micro-adjustable matte blackened zinc lever.',
     image: '/assets/product-2.jpg',
@@ -58,7 +58,7 @@ const DEFAULT_PRODUCTS = [
     id: 5,
     name: '7mm Extreme Neoprene Knee Sleeves',
     edition: '7mm Neoprene • IPF Spec Compression',
-    category: 'Equipment',
+    category: 'Apparel',
     price: '₹3,850',
     details: 'Anatomical contoured dual-stitching providing unmatched warmth and joint stabilization.',
     image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
@@ -69,7 +69,7 @@ const DEFAULT_PRODUCTS = [
     id: 6,
     name: 'Matte Vantablack Steel Shaker (750ml)',
     edition: '750ml • Kitchen-Grade Steel',
-    category: 'Equipment',
+    category: 'Nutrition',
     price: '₹1,699',
     details: 'Vacuum-sealed kitchen-grade stainless steel keeping shakes ice cold for 24 hours.',
     image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
@@ -91,7 +91,7 @@ const DEFAULT_PRODUCTS = [
     id: 8,
     name: 'Reinforced Cotton Heavy Lifting Straps',
     edition: '1.5 Inch Heavy Webbing • Neoprene Padded',
-    category: 'Equipment',
+    category: 'Apparel',
     price: '₹999',
     details: 'Extra-long 1.5 inch heavy cotton with neoprene wrist padding for max overload pulling.',
     image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
@@ -113,7 +113,7 @@ const DEFAULT_PRODUCTS = [
     id: 10,
     name: 'Deep Tissue Percussion Massager Gun',
     edition: '16mm Stroke • 6 Titanium Heads',
-    category: 'Equipment',
+    category: 'Apparel',
     price: '₹7,999',
     details: '16mm amplitude percussive therapy with 6 precision titanium-alloy interchangeable heads.',
     image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80',
@@ -146,7 +146,7 @@ const DEFAULT_PRODUCTS = [
     id: 13,
     name: 'Ultra-Pure Magnesium Gym Chalk (8 Pack)',
     edition: '8 Blocks • 100% Pure Magnesium',
-    category: 'Equipment',
+    category: 'Nutrition',
     price: '₹799',
     details: '100% pure magnesium carbonate without toxic fillers, providing instantaneous dry grip.',
     image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
@@ -318,7 +318,7 @@ export default function ProductsSection({ products = [] }) {
   const fallbackImages = ['/assets/product-1.jpg', '/assets/product-2.jpg', '/assets/product-3.jpg'];
   const lookbookImages = [0, 1, 2].map((i) => allProducts[i]?.image || fallbackImages[i]);
 
-  const categories = ['ALL', 'NUTRITION', 'EQUIPMENT', 'APPAREL'];
+  const categories = ['ALL', 'APPAREL', 'NUTRITION'];
 
   const filteredProducts =
     activeCategory === 'ALL'

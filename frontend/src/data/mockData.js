@@ -88,7 +88,7 @@ export const productsData = [
     id: 2,
     name: 'Architect Leather Lever Belt (11mm)',
     edition: 'Hand-Crafted Edition',
-    category: 'Equipment',
+    category: 'Apparel',
     price: '₹8,999',
     details: 'Full-grain English bridle leather, micro-adjustable matte blackened zinc lever.',
     image: '/assets/product-2.jpg',

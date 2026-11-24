@@ -675,13 +675,15 @@ export default function AdminItemModal({
                     Category
                   </label>
                   <select
-                    value={formData.category || 'Nutrition'}
+                    value={formData.category || 'Apparel'}
                     onChange={(e) => handleChange('category', e.target.value)}
                     className="w-full bg-black/60 border border-white/15 focus:border-[#c5a880] px-3.5 py-2 text-sm text-white outline-none"
                   >
-                    <option value="Nutrition">Nutrition</option>
-                    <option value="Equipment">Equipment</option>
                     <option value="Apparel">Apparel</option>
+                    <option value="Nutrition">Nutrition</option>
+                    {formData.category && !['Apparel', 'Nutrition'].includes(formData.category) && (
+                      <option value={formData.category}>{formData.category}</option>
+                    )}
                   </select>
                 </div>
               </div>
