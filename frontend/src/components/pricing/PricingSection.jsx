@@ -9,11 +9,11 @@ import {
   ShieldCheck,
   MessageCircle,
 } from 'lucide-react';
-import { PLANS_DATA } from '../../data/plansData';
 import { getWhatsAppUrl } from '../../config/siteConfig';
 
 export default function PricingSection({ plans: propPlans } = {}) {
-  const [plans, setPlans] = useState(propPlans && propPlans.length > 0 ? propPlans : PLANS_DATA);
+  const plans = Array.isArray(propPlans) ? propPlans : [];
+  const activePlans = plans.filter((p) => p.isActive !== false);
   const [cardioIncluded, setCardioIncluded] = useState(false);
   const scrollContainerRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -42,14 +42,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
     updateScrollState();
 
     return () => container.removeEventListener('scroll', updateScrollState);
-  }, []);
-
-  // Sync when propPlans changes from bootstrap
-  useEffect(() => {
-    if (propPlans && propPlans.length > 0) {
-      setPlans(propPlans);
-    }
-  }, [propPlans]);
+  }, [activePlans]);
 
   const handleScroll = (direction) => {
     if (!scrollContainerRef.current) return;
@@ -72,7 +65,7 @@ export default function PricingSection({ plans: propPlans } = {}) {
     window.open(getWhatsAppUrl(message), '_blank');
   };
 
-  const singleMonthPlan = plans.find((p) => (Number(p.durationMonths) || 1) === 1);
+  const singleMonthPlan = activePlans.find((p) => (Number(p.durationMonths) || 1) === 1);
   const baseMonthlyPrice = singleMonthPlan ? Number(singleMonthPlan.price) : 1000;
 
   // Build authentic, honest gym features list
@@ -177,89 +170,118 @@ export default function PricingSection({ plans: propPlans } = {}) {
             </h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            {/* Cardio Access Switcher */}
-            <div className="inline-flex p-1 bg-[#111116] border border-white/10 rounded-full shadow-inner relative">
-              <button
-                type="button"
-                onClick={() => setCardioIncluded(false)}
-                className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 cursor-pointer ${
-                  !cardioIncluded ? 'text-black font-bold' : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {!cardioIncluded && (
-                  <motion.div
-                    layoutId="pricingTierPill"
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    className="absolute inset-0 bg-[#c5a880] rounded-full -z-10 shadow-sm"
-                  />
-                )}
-                <span>Standard Access</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setCardioIncluded(true)}
-                className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 flex items-center gap-1.5 cursor-pointer ${
-                  cardioIncluded ? 'text-black font-bold' : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {cardioIncluded && (
-                  <motion.div
-                    layoutId="pricingTierPill"
-                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-                    className="absolute inset-0 bg-[#c5a880] rounded-full -z-10 shadow-sm"
-                  />
-                )}
-                <span>Cardio Included</span>
-                <span
-                  className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
-                    cardioIncluded ? 'bg-black text-[#c5a880]' : 'bg-[#c5a880]/20 text-[#c5a880]'
+          {activePlans.length > 0 && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              {/* Cardio Access Switcher */}
+              <div className="inline-flex p-1 bg-[#111116] border border-white/10 rounded-full shadow-inner relative">
+                <button
+                  type="button"
+                  onClick={() => setCardioIncluded(false)}
+                  className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 cursor-pointer ${
+                    !cardioIncluded ? 'text-black font-bold' : 'text-gray-400 hover:text-white'
                   }`}
                 >
-                  +₹200/mo
-                </span>
-              </button>
-            </div>
+                  {!cardioIncluded && (
+                    <motion.div
+                      layoutId="pricingTierPill"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      className="absolute inset-0 bg-[#c5a880] rounded-full -z-10 shadow-sm"
+                    />
+                  )}
+                  <span>Standard Access</span>
+                </button>
 
-            {/* Desktop Navigation Chevrons */}
-            <div className="hidden sm:flex items-center gap-2 self-start sm:self-auto">
-              <button
-                type="button"
-                onClick={() => handleScroll('left')}
-                disabled={!canScrollLeft}
-                aria-label="Scroll Left"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScroll('right')}
-                disabled={!canScrollRight}
-                aria-label="Scroll Right"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setCardioIncluded(true)}
+                  className={`relative px-4 sm:px-5 py-2 text-xs uppercase tracking-wider font-mono font-semibold transition-colors duration-200 rounded-full z-10 flex items-center gap-1.5 cursor-pointer ${
+                    cardioIncluded ? 'text-black font-bold' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {cardioIncluded && (
+                    <motion.div
+                      layoutId="pricingTierPill"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      className="absolute inset-0 bg-[#c5a880] rounded-full -z-10 shadow-sm"
+                    />
+                  )}
+                  <span>Cardio Included</span>
+                  <span
+                    className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                      cardioIncluded ? 'bg-black text-[#c5a880]' : 'bg-[#c5a880]/20 text-[#c5a880]'
+                    }`}
+                  >
+                    +₹200/mo
+                  </span>
+                </button>
+              </div>
+
+              {/* Desktop Navigation Chevrons */}
+              <div className="hidden sm:flex items-center gap-2 self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => handleScroll('left')}
+                  disabled={!canScrollLeft}
+                  aria-label="Scroll Left"
+                  className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScroll('right')}
+                  disabled={!canScrollRight}
+                  aria-label="Scroll Right"
+                  className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm cursor-pointer"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </motion.div>
       </div>
 
-      {/* ==================== 2. MAIN STATIC CAROUSEL ==================== */}
-      <div className="relative w-full">
-        <div
-          ref={scrollContainerRef}
-          className="w-full overflow-x-auto overflow-y-visible overscroll-x-contain flex flex-nowrap gap-6 sm:gap-8 snap-x snap-proximity scroll-smooth no-scrollbar py-6 px-6 md:px-12 touch-pan-x touch-pan-y"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch',
-            touchAction: 'pan-x pan-y',
-          }}
-        >
-          {plans.map((plan, index) => {
+      {/* ==================== 2. MAIN STATIC CAROUSEL / EMPTY STATE ==================== */}
+      {activePlans.length === 0 ? (
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+          <div className="w-full max-w-xl mx-auto p-8 sm:p-10 bg-[#0b0b0e] border border-white/10 text-center flex flex-col items-center justify-center space-y-4 shadow-cinematic">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#c5a880] animate-pulse" />
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#c5a880] font-semibold">
+                Tiers Updating
+              </span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-white font-display">
+              Membership Plans Under Revision
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-400 font-light max-w-md leading-relaxed">
+              Active membership tiers and seasonal pass rates are currently being updated. Inquire directly with gym management for day-pass or custom enrollment access.
+            </p>
+            <a
+              href={getWhatsAppUrl('Hello The Fitness Club, I would like to inquire about membership options and current floor rates.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#c5a880] text-black text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors mt-2"
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>Inquire on WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div className="relative w-full">
+          <div
+            ref={scrollContainerRef}
+            className="w-full overflow-x-auto overflow-y-visible overscroll-x-contain flex flex-nowrap gap-6 sm:gap-8 snap-x snap-proximity scroll-smooth no-scrollbar py-6 px-6 md:px-12 touch-pan-x touch-pan-y"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-x pan-y',
+            }}
+          >
+            {activePlans.map((plan, index) => {
             const basePrice = Number(plan.price) || 0;
             const duration = Number(plan.durationMonths) || 1;
 
@@ -441,26 +463,29 @@ export default function PricingSection({ plans: propPlans } = {}) {
           </div>
         </div>
       </div>
+      )}
 
       {/* ==================== 3. SCROLL PROGRESS INDICATOR & SWIPE HINT ==================== */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        {/* Progress Bar */}
-        <div className="flex-1 max-w-md">
-          <div className="w-full h-1 bg-white/10 overflow-hidden">
-            <motion.div
-              className="h-full bg-[#c5a880]"
-              style={{ width: `${Math.max(scrollProgress, 12)}%` }}
-              transition={{ ease: 'easeOut', duration: 0.15 }}
-            />
+      {activePlans.length > 0 && (
+        <div className="max-w-7xl mx-auto px-6 md:px-12 mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Progress Bar */}
+          <div className="flex-1 max-w-md">
+            <div className="w-full h-1 bg-white/10 overflow-hidden">
+              <motion.div
+                className="h-full bg-[#c5a880]"
+                style={{ width: `${Math.max(scrollProgress, 12)}%` }}
+                transition={{ ease: 'easeOut', duration: 0.15 }}
+              />
+            </div>
+          </div>
+
+          {/* Swipe Prompt */}
+          <div className="flex items-center gap-3 text-gray-500 font-mono text-[11px] uppercase tracking-wider">
+            <span className="sm:hidden">← Swipe Horizontally to View All Plans →</span>
+            <span className="hidden sm:inline">Use Mouse Wheel / Click Chevrons to Explore Tiers</span>
           </div>
         </div>
-
-        {/* Swipe Prompt */}
-        <div className="flex items-center gap-3 text-gray-500 font-mono text-[11px] uppercase tracking-wider">
-          <span className="sm:hidden">← Swipe Horizontally to View All Plans →</span>
-          <span className="hidden sm:inline">Use Mouse Wheel / Click Chevrons to Explore Tiers</span>
-        </div>
-      </div>
+      )}
 
       {/* Guarantee & Transparency Strip */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 mt-8">

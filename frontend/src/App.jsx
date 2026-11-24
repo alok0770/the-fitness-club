@@ -17,13 +17,11 @@ import Footer from './components/common/Footer';
 import AdminPanel from './components/admin/AdminPanel';
 
 import { fetchBootstrapData, CACHE_KEY } from './lib/api';
-import { transformationsData, eventsData, productsData } from './data/mockData';
-import { PLANS_DATA } from './data/plansData';
 
 /**
- * Zero-Wait Cold-Start Proof CMS Initializer.
- * Reads instantly from localStorage cache (tfc_cms_cache_v1) or falls back to
- * local mock/plans data so public visitors NEVER see a blank or loading screen.
+ * Clean CMS Initializer.
+ * Reads from localStorage cache (tfc_cms_cache_v1) or defaults to empty arrays.
+ * Never falls back to hardcoded stock/demo items when content is deleted.
  */
 function getInitialCmsData() {
   try {
@@ -31,18 +29,10 @@ function getInitialCmsData() {
     if (cached) {
       const parsed = JSON.parse(cached);
       return {
-        transformations: Array.isArray(parsed.transformations)
-          ? parsed.transformations
-          : transformationsData,
-        events: Array.isArray(parsed.events)
-          ? parsed.events
-          : eventsData,
-        products: Array.isArray(parsed.products)
-          ? parsed.products
-          : productsData,
-        plans: Array.isArray(parsed.plans)
-          ? parsed.plans
-          : PLANS_DATA,
+        transformations: Array.isArray(parsed.transformations) ? parsed.transformations : [],
+        events: Array.isArray(parsed.events) ? parsed.events : [],
+        products: Array.isArray(parsed.products) ? parsed.products : [],
+        plans: Array.isArray(parsed.plans) ? parsed.plans : [],
       };
     }
   } catch (err) {
@@ -50,10 +40,10 @@ function getInitialCmsData() {
   }
 
   return {
-    transformations: transformationsData,
-    events: eventsData,
-    products: productsData,
-    plans: PLANS_DATA,
+    transformations: [],
+    events: [],
+    products: [],
+    plans: [],
   };
 }
 

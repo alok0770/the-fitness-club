@@ -8,6 +8,7 @@ import com.thefitnessclub.repository.EventRepository;
 import com.thefitnessclub.repository.MembershipPlanRepository;
 import com.thefitnessclub.repository.ProductRepository;
 import com.thefitnessclub.repository.TransformationRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ public class DataSeeder implements CommandLineRunner {
     private final EventRepository eventRepo;
     private final ProductRepository productRepo;
     private final MembershipPlanRepository planRepo;
+
+    @Value("${app.seed-demo-data:false}")
+    private boolean seedDemoData;
 
     public DataSeeder(TransformationRepository transformationRepo,
                       EventRepository eventRepo,
@@ -31,6 +35,9 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (!seedDemoData) {
+            return;
+        }
         seedPlans();
         seedTransformations();
         seedEvents();

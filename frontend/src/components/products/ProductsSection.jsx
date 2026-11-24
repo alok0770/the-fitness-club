@@ -9,185 +9,7 @@ import {
 } from 'lucide-react';
 import { getWhatsAppUrl, PRO_SHOP_INSTAGRAM_URL, PRO_SHOP_INSTAGRAM_HANDLE } from '../../config/siteConfig';
 
-// Comprehensive array of 14+ Curated Pro Shop Products
-const DEFAULT_PRODUCTS = [
-  {
-    id: 1,
-    name: 'Hydrolyzed Native Whey Isolate',
-    edition: '2kg • 66 Servings • Cold-Pressed',
-    category: 'Nutrition',
-    price: '₹5,499',
-    details: '94% purity cold-pressed grass-fed isolate with bioactive enzymatic absorption matrix.',
-    image: '/assets/product-1.jpg',
-    status: 'In Stock',
-    badge: 'Best Seller',
-  },
-  {
-    id: 2,
-    name: 'Architect Leather Lever Belt (11mm)',
-    edition: '11mm Thickness • Heavy Bridle Leather',
-    category: 'Apparel',
-    price: '₹8,999',
-    details: 'Full-grain English bridle leather with micro-adjustable matte blackened zinc lever.',
-    image: '/assets/product-2.jpg',
-    status: 'Limited Stock',
-    badge: 'IPF Approved',
-  },
-  {
-    id: 3,
-    name: 'Heavy French Terry Oversized Hoodie',
-    edition: '520 GSM • Drop-Shoulder Silhouette',
-    category: 'Apparel',
-    price: '₹4,200',
-    details: 'Drop-shoulder structure with tonal embossed emblem and dense double-knit cuffs.',
-    image: '/assets/product-3.jpg',
-    status: 'In Stock',
-    badge: 'Member Favorite',
-  },
-  {
-    id: 4,
-    name: 'Pure Micronized Creapure & Minerals',
-    edition: '250g • 83 Servings • Unflavoured',
-    category: 'Nutrition',
-    price: '₹2,199',
-    details: 'Pharmaceutical grade creatine monohydrate combined with bioactive chelated electrolytes.',
-    image: '/assets/product-4.jpg',
-    status: 'In Stock',
-    badge: 'Certified Clean',
-  },
-  {
-    id: 5,
-    name: '7mm Extreme Neoprene Knee Sleeves',
-    edition: '7mm Neoprene • IPF Spec Compression',
-    category: 'Apparel',
-    price: '₹3,850',
-    details: 'Anatomical contoured dual-stitching providing unmatched warmth and joint stabilization.',
-    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Heavy Lifting',
-  },
-  {
-    id: 6,
-    name: 'Matte Vantablack Steel Shaker (750ml)',
-    edition: '750ml • Kitchen-Grade Steel',
-    category: 'Nutrition',
-    price: '₹1,699',
-    details: 'Vacuum-sealed kitchen-grade stainless steel keeping shakes ice cold for 24 hours.',
-    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Essential',
-  },
-  {
-    id: 7,
-    name: 'Titan High-Stim Pre-Workout Matrix',
-    edition: '300g • 30 Servings • Max Vascularity',
-    category: 'Nutrition',
-    price: '₹3,499',
-    details: 'Clinically dosed L-Citrulline, Beta-Alanine, and Alpha-GPC for intense vascular pumps.',
-    image: 'https://images.unsplash.com/photo-1584466977799-64b494c65e88?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'High Performance',
-  },
-  {
-    id: 8,
-    name: 'Reinforced Cotton Heavy Lifting Straps',
-    edition: '1.5 Inch Heavy Webbing • Neoprene Padded',
-    category: 'Apparel',
-    price: '₹999',
-    details: 'Extra-long 1.5 inch heavy cotton with neoprene wrist padding for max overload pulling.',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Overload Gear',
-  },
-  {
-    id: 9,
-    name: 'Drop-Shoulder Acid Wash Pump Cover',
-    edition: '280 GSM • Vintage Heavy Jersey',
-    category: 'Apparel',
-    price: '₹2,499',
-    details: 'Pre-shrunk luxury cotton with custom distressed wash and golden crest embroidery.',
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Streetwear Cut',
-  },
-  {
-    id: 10,
-    name: 'Deep Tissue Percussion Massager Gun',
-    edition: '16mm Stroke • 6 Titanium Heads',
-    category: 'Apparel',
-    price: '₹7,999',
-    details: '16mm amplitude percussive therapy with 6 precision titanium-alloy interchangeable heads.',
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80',
-    status: 'Low Stock',
-    badge: 'Recovery Pro',
-  },
-  {
-    id: 11,
-    name: 'Fermented Plant BCAA + Glutamine',
-    edition: '400g • 40 Servings • Electrolytes',
-    category: 'Nutrition',
-    price: '₹2,799',
-    details: '2:1:1 instantaneous amino ratio with Himalayan pink salt electrolytes for muscular endurance.',
-    image: 'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Zero Sugar',
-  },
-  {
-    id: 12,
-    name: 'TFC Military Heavy Duffel Bag (55L)',
-    edition: '55L Capacity • Cordura 1000D Tactical',
-    category: 'Apparel',
-    price: '₹4,899',
-    details: 'Weatherproof ballistic nylon with ventilated shoe chamber and dedicated lifting belt holster.',
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Durability Guaranteed',
-  },
-  {
-    id: 13,
-    name: 'Ultra-Pure Magnesium Gym Chalk (8 Pack)',
-    edition: '8 Blocks • 100% Pure Magnesium',
-    category: 'Nutrition',
-    price: '₹799',
-    details: '100% pure magnesium carbonate without toxic fillers, providing instantaneous dry grip.',
-    image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Max Friction',
-  },
-  {
-    id: 14,
-    name: 'Compression Athletic Performance Shorts',
-    edition: 'Aeroflex Liner • Laser Perforated',
-    category: 'Apparel',
-    price: '₹1,999',
-    details: 'Built-in phone compression liner with laser-perforated cooling panels for mobility.',
-    image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Anti-Chafe',
-  },
-  {
-    id: 15,
-    name: 'Architect Zero-Drop Barefoot Lifting Shoes',
-    edition: 'Zero-Drop • Vibram Sole • Wide Toe Box',
-    category: 'Shoes',
-    price: '₹6,499',
-    details: 'Ultra-flat ground feedback with reinforced lateral containment for heavy squats and pulls.',
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Powerlifting Spec',
-  },
-  {
-    id: 16,
-    name: 'TFC Competition Deadlift Slippers',
-    edition: '2mm Ultra-Thin Sole • Dual Lock Straps',
-    category: 'Shoes',
-    price: '₹2,799',
-    details: 'Minimalist rubber traction sole bringing feet as close to the platform as possible.',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
-    status: 'In Stock',
-    badge: 'Platform Approved',
-  },
-];
+// Helper to auto-format price with ₹ prefix if missing
 
 // Helper to auto-format price with ₹ prefix if missing
 function formatPrice(price) {
@@ -340,10 +162,10 @@ export default function ProductsSection({ products = [] }) {
   const spotlightBackground = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, rgba(197, 168, 128, 0.14), transparent 75%)`;
 
   // Distinguish between live CMS array (even if empty []) and cold-start fallback (undefined/null)
-  const allProducts = Array.isArray(products) ? products : DEFAULT_PRODUCTS;
+  const allProducts = Array.isArray(products) ? products : [];
 
   // Derive Lookbook Reel strictly from live products prop (never mix in stock/fallback photos)
-  const liveReelItems = (Array.isArray(products) ? products : allProducts).filter(
+  const liveReelItems = allProducts.filter(
     (p) => p && p.image && typeof p.image === 'string' && p.image.trim().length > 0
   );
 
@@ -495,6 +317,28 @@ export default function ProductsSection({ products = [] }) {
             touchAction: 'pan-x pan-y',
           }}
         >
+          {filteredProducts.length === 0 && (
+            <div
+              className="snap-center md:snap-start shrink-0 w-72 sm:w-80 md:w-96 flex flex-col items-center justify-center p-8 bg-[#0b0b0e] border border-white/10 text-center space-y-4 touch-pan-x touch-pan-y shadow-cinematic"
+              style={{ touchAction: 'pan-x pan-y' }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#c5a880] animate-pulse" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#c5a880] font-semibold">
+                  {allProducts.length === 0 ? 'Arsenal Updating' : 'No Items In Category'}
+                </span>
+              </div>
+              <h3 className="text-xl font-bold uppercase tracking-tight text-white font-display">
+                {allProducts.length === 0 ? 'Inventory In Refresh' : `No ${activeCategory} Available`}
+              </h3>
+              <p className="text-xs text-gray-400 font-light max-w-xs leading-relaxed">
+                {allProducts.length === 0
+                  ? 'Official club gear and nutrition drops are updated regularly. Inquire directly for current on-floor stock.'
+                  : `Browse other categories or place a custom order for ${activeCategory.toLowerCase()} gear.`}
+              </p>
+            </div>
+          )}
+
           {filteredProducts.map((product, index) => (
             <ProductCardItem key={product._id || product.id || index} product={product} index={index} />
           ))}

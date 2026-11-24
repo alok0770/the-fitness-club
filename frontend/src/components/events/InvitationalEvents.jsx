@@ -20,44 +20,7 @@ import { getWhatsAppUrl } from '../../config/siteConfig';
  * low-saturation documentary aesthetic without touching any layout code.
  * ============================================================================
  */
-export const EVENTS_DATA = [
-  {
-    id: 'iron-clash',
-    title: 'Iron Clash: Deadlift & PR Night',
-    tag: 'STRENGTH MEET',
-    caption: 'Heavy iron, raw chalk, and personal records under the lights.',
-    image: '/images/events/event-1.jpg',
-    fallbackImage:
-      'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?auto=format&fit=crop&w=1600&q=85',
-  },
-  {
-    id: 'strength-grip-challenge',
-    title: 'Strength & Grip Challenge',
-    tag: 'COMMUNITY SHOWDOWN',
-    caption: 'Monthly head-to-head endurance and grip battles for the squad.',
-    image: '/images/events/event-2.jpg',
-    fallbackImage:
-      'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=1600&q=85',
-  },
-  {
-    id: 'squad-night',
-    title: 'The Fitness Club: Squad Night',
-    tag: 'CLUB CELEBRATION',
-    caption: 'Celebrating milestones, anniversaries, and the people who build this floor.',
-    image: '/images/events/event-3.jpg',
-    fallbackImage:
-      'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=1600&q=85',
-  },
-  {
-    id: 'outdoor-conditioning',
-    title: 'Sunday Outdoor Conditioning',
-    tag: 'OUTDOOR RUN CLUB',
-    caption: 'Sunrise sprints and recovery sessions beyond the gym walls.',
-    image: '/images/events/event-4.jpg',
-    fallbackImage:
-      'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=85',
-  },
-];
+export const EVENTS_DATA = [];
 
 // Single Event Card with 35mm Documentary Filter and Spring Hover Glow
 function EventCardItem({ event, index }) {
@@ -115,7 +78,7 @@ function EventCardItem({ event, index }) {
 }
 
 export default function InvitationalEvents({ events = [] } = {}) {
-  const displayEvents = events && events.length > 0 ? events : EVENTS_DATA;
+  const displayEvents = Array.isArray(events) ? events : [];
   const scrollContainerRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -142,7 +105,7 @@ export default function InvitationalEvents({ events = [] } = {}) {
     updateScrollState();
 
     return () => container.removeEventListener('scroll', updateScrollState);
-  }, []);
+  }, [displayEvents]);
 
   const handleScroll = (direction) => {
     if (!scrollContainerRef.current) return;
@@ -178,7 +141,7 @@ export default function InvitationalEvents({ events = [] } = {}) {
                 Joshiyara Road HQ • Uttarkashi
               </span>
               <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider font-mono font-bold bg-[#c5a880]/15 text-[#c5a880] border border-[#c5a880]/30">
-                Raw Documentary
+                {displayEvents.length > 0 ? `${displayEvents.length} Meets` : 'Calendar Updating'}
               </span>
             </div>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white font-display">
@@ -192,26 +155,28 @@ export default function InvitationalEvents({ events = [] } = {}) {
             </p>
 
             {/* Desktop Left / Right Navigation Chevrons */}
-            <div className="hidden sm:flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleScroll('left')}
-                disabled={!canScrollLeft}
-                aria-label="Scroll Left"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScroll('right')}
-                disabled={!canScrollRight}
-                aria-label="Scroll Right"
-                className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+            {displayEvents.length > 0 && (
+              <div className="hidden sm:flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleScroll('left')}
+                  disabled={!canScrollLeft}
+                  aria-label="Scroll Left"
+                  className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScroll('right')}
+                  disabled={!canScrollRight}
+                  aria-label="Scroll Right"
+                  className="w-11 h-11 bg-[#111116] border border-white/10 hover:border-[#c5a880] text-white flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#c5a880] hover:text-black shadow-sm"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
@@ -228,9 +193,29 @@ export default function InvitationalEvents({ events = [] } = {}) {
             touchAction: 'pan-x pan-y',
           }}
         >
-          {displayEvents.map((event, index) => (
-            <EventCardItem key={event._id || event.id || index} event={event} index={index} />
-          ))}
+          {displayEvents.length === 0 ? (
+            <div
+              className="snap-center md:snap-start shrink-0 w-80 sm:w-96 md:w-[440px] aspect-[16/10] flex flex-col items-center justify-center p-8 bg-[#0b0b0e] border border-white/10 text-center space-y-3.5 select-none touch-pan-x touch-pan-y shadow-cinematic"
+              style={{ touchAction: 'pan-x pan-y' }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#c5a880] animate-pulse" />
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#c5a880] font-semibold">
+                  Calendar In Preparation
+                </span>
+              </div>
+              <h3 className="text-xl font-bold uppercase tracking-tight text-white font-display">
+                No Active Meets Scheduled
+              </h3>
+              <p className="text-xs text-gray-400 font-light max-w-xs leading-relaxed">
+                Seasonal invitational meets and athlete challenges are announced periodically.
+              </p>
+            </div>
+          ) : (
+            displayEvents.map((event, index) => (
+              <EventCardItem key={event._id || event.id || index} event={event} index={index} />
+            ))
+          )}
 
           {/* End-of-Carousel Host Sanctioned Meet Card */}
           <div
