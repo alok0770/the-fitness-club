@@ -150,7 +150,7 @@ const DEFAULT_TRANSFORMATIONS = [
   },
 ];
 
-// Single Transformation Card with unobstructed top photo stage & solid structured info footer
+// Single Transformation Card with zero-crop full-visibility photo stage & solid structured info footer
 function TransformationCardItem({ item, index, onOpenLightbox }) {
   const [viewState, setViewState] = useState('after'); // 'before' | 'after'
 
@@ -164,7 +164,7 @@ function TransformationCardItem({ item, index, onOpenLightbox }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.4) }}
-      className="snap-center md:snap-start shrink-0 w-72 sm:w-80 md:w-96 select-none touch-pan-x touch-pan-y"
+      className="snap-center md:snap-start shrink-0 w-[300px] sm:w-[340px] md:w-[360px] select-none touch-pan-x touch-pan-y"
       style={{ touchAction: 'pan-x pan-y' }}
     >
       <motion.div
@@ -172,34 +172,14 @@ function TransformationCardItem({ item, index, onOpenLightbox }) {
         transition={{ type: 'spring', stiffness: 240, damping: 20 }}
         className="group relative w-full overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col"
       >
-        {/* ================= TOP PHOTO STAGE (Unobstructed, High Clarity) ================= */}
-        <div
-          onClick={() => onOpenLightbox(item)}
-          className="relative w-full h-[340px] sm:h-[380px] overflow-hidden bg-black cursor-pointer"
-        >
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={viewState}
-              src={currentImage}
-              alt={`${item.name} - ${viewState}`}
-              loading="lazy"
-              initial={{ opacity: 0.6 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0.4 }}
-              transition={{ duration: 0.25 }}
-              className="w-full h-full object-cover object-top filter contrast-[1.05] group-hover:scale-105 transition-transform duration-500"
-            />
-          </AnimatePresence>
-
-          {/* Sleek, Compact Before / After Glass Pill Switcher (Top Left) */}
-          <div
-            className="absolute top-3.5 left-3.5 z-20 flex items-center bg-black/75 backdrop-blur-md border border-white/15 p-0.5 shadow-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
+        {/* ================= DEDICATED TOP CONTROL BAR (Off the athlete's photo) ================= */}
+        <div className="bg-[#0d0d11] border-b border-white/[0.08] px-4 py-2.5 flex items-center justify-between shrink-0 z-20">
+          {/* Tactile Before / After Segmented Pill Switcher */}
+          <div className="flex items-center bg-black/60 p-0.5 border border-white/10 rounded-sm">
             <button
               type="button"
               onClick={() => setViewState('before')}
-              className={`px-3 py-1 text-[10px] uppercase tracking-wider font-mono font-bold transition-all ${
+              className={`px-3 py-1 text-[10px] uppercase tracking-wider font-mono font-bold transition-all duration-200 cursor-pointer ${
                 viewState === 'before'
                   ? 'bg-white text-black shadow-sm'
                   : 'text-gray-400 hover:text-white'
@@ -210,7 +190,7 @@ function TransformationCardItem({ item, index, onOpenLightbox }) {
             <button
               type="button"
               onClick={() => setViewState('after')}
-              className={`px-3 py-1 text-[10px] uppercase tracking-wider font-mono font-bold transition-all ${
+              className={`px-3 py-1 text-[10px] uppercase tracking-wider font-mono font-bold transition-all duration-200 cursor-pointer ${
                 viewState === 'after'
                   ? 'bg-[#c5a880] text-black shadow-sm'
                   : 'text-gray-400 hover:text-white'
@@ -220,28 +200,54 @@ function TransformationCardItem({ item, index, onOpenLightbox }) {
             </button>
           </div>
 
-          {/* Top Right Duration Pill & Expand Lightbox Button */}
-          <div
-            className="absolute top-3.5 right-3.5 z-20 flex items-center gap-1.5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="px-2.5 py-1 bg-black/75 backdrop-blur-md border border-[#c5a880]/30 text-[10px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold shadow-lg">
+          {/* Duration Badge & Lightbox Expand Button */}
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-black/60 border border-[#c5a880]/30 text-[#e5c99e] font-semibold">
               {item.duration || '12 Weeks'}
-            </div>
+            </span>
             <button
               type="button"
               onClick={() => onOpenLightbox(item)}
               title="Full View / Lightbox"
               aria-label="View Full Photos"
-              className="w-7 h-7 bg-black/75 backdrop-blur-md border border-white/20 hover:border-[#c5a880] text-white hover:text-[#c5a880] flex items-center justify-center transition-colors shadow-lg cursor-pointer"
+              className="w-7 h-7 bg-black/60 border border-white/15 hover:border-[#c5a880] text-gray-300 hover:text-[#c5a880] flex items-center justify-center transition-colors cursor-pointer"
             >
               <Maximize2 className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
+        {/* ================= ZERO-CROP FULL-VISIBILITY PHOTO STAGE (aspect-[3/4]) ================= */}
+        <div
+          onClick={() => onOpenLightbox(item)}
+          className="relative w-full aspect-[3/4] overflow-hidden bg-black cursor-pointer flex items-center justify-center"
+        >
+          {/* Smart Zero-Crop Layering: Darkened Blurred Ambient Backdrop */}
+          <img
+            src={currentImage}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-35 brightness-50 pointer-events-none"
+          />
+
+          {/* Main Sharp Photo on Top (100% visible, zero cropping, zero dark body vignette) */}
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={viewState}
+              src={currentImage}
+              alt={`${item.name} - ${viewState}`}
+              loading="lazy"
+              initial={{ opacity: 0.6 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0.4 }}
+              transition={{ duration: 0.22 }}
+              className="relative z-10 w-full h-full object-contain filter contrast-[1.04] group-hover:scale-[1.02] transition-transform duration-500"
+            />
+          </AnimatePresence>
+        </div>
+
         {/* ================= STRUCTURED INFO FOOTER (Solid #0e0e12 Surface) ================= */}
-        <div className="p-5 sm:p-6 bg-[#0e0e12] border-t border-white/[0.08] flex flex-col justify-between space-y-3.5">
+        <div className="p-5 bg-[#0e0e12] border-t border-white/[0.08] flex-1 flex flex-col justify-between space-y-3.5">
           <div>
             {item.category && (
               <span className="text-[10px] uppercase tracking-ultra text-[#c5a880] font-bold block mb-1 font-sans truncate">

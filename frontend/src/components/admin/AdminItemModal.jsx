@@ -770,14 +770,27 @@ export default function AdminItemModal({
 
               <div>
                 <label className="text-[10px] font-mono uppercase tracking-wider text-gray-300 block mb-1">
-                  Short 1-Line Details
+                  Pack Size / Weight / Variant
                 </label>
                 <input
                   type="text"
+                  value={formData.edition || ''}
+                  onChange={(e) => handleChange('edition', e.target.value)}
+                  placeholder="e.g. 250g • 83 Servings • Unflavoured"
+                  className="w-full bg-black/60 border border-white/15 focus:border-[#c5a880] px-3.5 py-2 text-sm text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-mono uppercase tracking-wider text-gray-300 block mb-1">
+                  Product Details / Specifications
+                </label>
+                <textarea
+                  rows={2}
                   value={formData.details || ''}
                   onChange={(e) => handleChange('details', e.target.value)}
-                  placeholder="e.g. 94% purity cold-pressed isolate with enzymatic matrix."
-                  className="w-full bg-black/60 border border-white/15 focus:border-[#c5a880] px-3.5 py-2 text-sm text-white outline-none"
+                  placeholder="e.g. Pure micronised creatine monohydrate (3g per serving) for strength & recovery."
+                  className="w-full bg-black/60 border border-white/15 focus:border-[#c5a880] p-3 text-sm text-white outline-none"
                 />
               </div>
 
@@ -794,22 +807,10 @@ export default function AdminItemModal({
 
                 {showMoreOptions && (
                   <div className="pt-3 space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="text-[10px] font-mono uppercase tracking-wider text-gray-400 block mb-1">
-                          Edition / Subtitle
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.edition || ''}
-                          onChange={(e) => handleChange('edition', e.target.value)}
-                          placeholder="Formula No. 01"
-                          className="w-full bg-black/60 border border-white/15 focus:border-[#c5a880] px-3.5 py-2 text-sm text-white outline-none"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] font-mono uppercase tracking-wider text-gray-400 block mb-1">
-                          Badge
+                          Badge (e.g. Best Seller)
                         </label>
                         <input
                           type="text"

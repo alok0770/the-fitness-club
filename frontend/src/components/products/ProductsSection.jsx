@@ -5,7 +5,6 @@ import {
   ChevronRight,
   ArrowUpRight,
   ShoppingBag,
-  Sparkles,
 } from 'lucide-react';
 import { getWhatsAppUrl, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '../../config/siteConfig';
 
@@ -14,7 +13,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 1,
     name: 'Hydrolyzed Native Whey Isolate',
-    edition: 'Formula No. 01 • Cold-Pressed',
+    edition: '2kg • 66 Servings • Cold-Pressed',
     category: 'Nutrition',
     price: '₹5,499',
     details: '94% purity cold-pressed grass-fed isolate with bioactive enzymatic absorption matrix.',
@@ -25,7 +24,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 2,
     name: 'Architect Leather Lever Belt (11mm)',
-    edition: 'Hand-Crafted English Bridle',
+    edition: '11mm Thickness • Heavy Bridle Leather',
     category: 'Equipment',
     price: '₹8,999',
     details: 'Full-grain English bridle leather with micro-adjustable matte blackened zinc lever.',
@@ -36,7 +35,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 3,
     name: 'Heavy French Terry Oversized Hoodie',
-    edition: '520 GSM Minimalist Silhouette',
+    edition: '520 GSM • Drop-Shoulder Silhouette',
     category: 'Apparel',
     price: '₹4,200',
     details: 'Drop-shoulder structure with tonal embossed emblem and dense double-knit cuffs.',
@@ -47,7 +46,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 4,
     name: 'Pure Micronized Creapure & Minerals',
-    edition: 'Elemental Bioactive Complex',
+    edition: '250g • 83 Servings • Unflavoured',
     category: 'Nutrition',
     price: '₹2,199',
     details: 'Pharmaceutical grade creatine monohydrate combined with bioactive chelated electrolytes.',
@@ -58,7 +57,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 5,
     name: '7mm Extreme Neoprene Knee Sleeves',
-    edition: 'High-Rebound Compression Fit',
+    edition: '7mm Neoprene • IPF Spec Compression',
     category: 'Equipment',
     price: '₹3,850',
     details: 'Anatomical contoured dual-stitching providing unmatched warmth and joint stabilization.',
@@ -69,7 +68,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 6,
     name: 'Matte Vantablack Steel Shaker (750ml)',
-    edition: 'Insulated Double-Wall Stainless',
+    edition: '750ml • Kitchen-Grade Steel',
     category: 'Equipment',
     price: '₹1,699',
     details: 'Vacuum-sealed kitchen-grade stainless steel keeping shakes ice cold for 24 hours.',
@@ -80,7 +79,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 7,
     name: 'Titan High-Stim Pre-Workout Matrix',
-    edition: 'Neuromuscular Focus Compound',
+    edition: '300g • 30 Servings • Max Vascularity',
     category: 'Nutrition',
     price: '₹3,499',
     details: 'Clinically dosed L-Citrulline, Beta-Alanine, and Alpha-GPC for intense vascular pumps.',
@@ -91,7 +90,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 8,
     name: 'Reinforced Cotton Heavy Lifting Straps',
-    edition: 'Industrial Webbing Stitch',
+    edition: '1.5 Inch Heavy Webbing • Neoprene Padded',
     category: 'Equipment',
     price: '₹999',
     details: 'Extra-long 1.5 inch heavy cotton with neoprene wrist padding for max overload pulling.',
@@ -102,7 +101,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 9,
     name: 'Drop-Shoulder Acid Wash Pump Cover',
-    edition: '280 GSM Vintage Heavy Jersey',
+    edition: '280 GSM • Vintage Heavy Jersey',
     category: 'Apparel',
     price: '₹2,499',
     details: 'Pre-shrunk luxury cotton with custom distressed wash and golden crest embroidery.',
@@ -113,7 +112,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 10,
     name: 'Deep Tissue Percussion Massager Gun',
-    edition: 'Brushless High-Torque Motor',
+    edition: '16mm Stroke • 6 Titanium Heads',
     category: 'Equipment',
     price: '₹7,999',
     details: '16mm amplitude percussive therapy with 6 precision titanium-alloy interchangeable heads.',
@@ -124,7 +123,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 11,
     name: 'Fermented Plant BCAA + Glutamine',
-    edition: 'Intra-Workout Hydration',
+    edition: '400g • 40 Servings • Electrolytes',
     category: 'Nutrition',
     price: '₹2,799',
     details: '2:1:1 instantaneous amino ratio with Himalayan pink salt electrolytes for muscular endurance.',
@@ -135,7 +134,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 12,
     name: 'TFC Military Heavy Duffel Bag (55L)',
-    edition: 'Cordura 1000D Tactical Build',
+    edition: '55L Capacity • Cordura 1000D Tactical',
     category: 'Apparel',
     price: '₹4,899',
     details: 'Weatherproof ballistic nylon with ventilated shoe chamber and dedicated lifting belt holster.',
@@ -146,7 +145,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 13,
     name: 'Ultra-Pure Magnesium Gym Chalk (8 Pack)',
-    edition: 'Pharmaceutical Grade Block',
+    edition: '8 Blocks • 100% Pure Magnesium',
     category: 'Equipment',
     price: '₹799',
     details: '100% pure magnesium carbonate without toxic fillers, providing instantaneous dry grip.',
@@ -157,7 +156,7 @@ const DEFAULT_PRODUCTS = [
   {
     id: 14,
     name: 'Compression Athletic Performance Shorts',
-    edition: 'Four-Way Stretch Aeroflex',
+    edition: 'Aeroflex Liner • Laser Perforated',
     category: 'Apparel',
     price: '₹1,999',
     details: 'Built-in phone compression liner with laser-perforated cooling panels for mobility.',
@@ -194,6 +193,16 @@ function ProductCardItem({ product, index }) {
     window.open(url, '_blank');
   };
 
+  // Split edition into clean spec tags if present
+  const specTags = product.edition
+    ? product.edition
+        .split(/[•|,]+/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
+
+  const hasDetails = Boolean(product.details && product.details.trim());
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -208,7 +217,7 @@ function ProductCardItem({ product, index }) {
         transition={{ type: 'spring', stiffness: 240, damping: 20 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="group relative w-full h-full min-h-[460px] overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col justify-between"
+        className="group relative w-full h-full overflow-hidden bg-[#0b0b0e] border border-white/[0.08] hover:border-[#c5a880]/70 transition-all duration-300 shadow-cinematic hover:shadow-[0_0_25px_rgba(197,168,128,0.35)] flex flex-col justify-between"
       >
         {/* Studio Product Stage (h-60 sm:h-64 w-full shrink-0) */}
         <div className="relative h-60 sm:h-64 w-full shrink-0 flex items-center justify-center p-5 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.12)_0%,#111116_55%,#09090c_100%)] overflow-hidden">
@@ -236,31 +245,45 @@ function ProductCardItem({ product, index }) {
           </div>
         </div>
 
-        {/* Always-Visible Product Info Block */}
-        <div className="p-5 flex-1 flex flex-col justify-between space-y-4 bg-[#0b0b0e]">
-          <div className="space-y-1.5">
-            {product.edition && (
-              <span className="text-[10px] uppercase tracking-wider text-gray-400 font-mono font-medium block truncate">
-                {product.edition}
-              </span>
-            )}
-            <h3 className="text-base sm:text-lg font-bold uppercase tracking-tight text-white group-hover:text-[#c5a880] transition-colors line-clamp-1 font-display">
+        {/* Rich, Always-Visible Info Block (p-5 flex-1 flex flex-col gap-3) */}
+        <div className="p-5 flex-1 flex flex-col justify-between bg-[#0b0b0e]">
+          <div className="space-y-2.5">
+            {/* Product Title */}
+            <h3 className="text-lg sm:text-xl font-bold uppercase tracking-tight text-white group-hover:text-[#c5a880] transition-colors font-display line-clamp-1">
               {product.name}
             </h3>
-            {product.details && (
-              <p className="text-xs text-gray-400 font-light leading-relaxed line-clamp-2">
-                {product.details}
-              </p>
+
+            {/* Pack Size / Spec Pills */}
+            {specTags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-0.5">
+                {specTags.map((spec, sIdx) => (
+                  <span
+                    key={sIdx}
+                    className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-white/[0.04] text-[#c5a880] border border-[#c5a880]/20 rounded-sm"
+                  >
+                    {spec}
+                  </span>
+                ))}
+              </div>
             )}
+
+            {/* Product Specifications / Description */}
+            <p className="text-xs sm:text-[13px] text-gray-300 leading-relaxed line-clamp-3 font-light">
+              {hasDetails
+                ? product.details
+                : specTags.length === 0
+                ? 'Available directly at The Fitness Club Pro Shop, Joshiyara Road HQ.'
+                : ''}
+            </p>
           </div>
 
-          {/* Bottom divider + Price & Action Row */}
-          <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
+          {/* Bottom Price & Action Bar (mt-auto pt-4 border-t border-white/[0.08] flex items-center justify-between) */}
+          <div className="mt-4 pt-3.5 border-t border-white/[0.08] flex items-center justify-between gap-3">
             <div>
               <span className="text-[9px] uppercase tracking-wider text-gray-500 font-mono block">
                 Price
               </span>
-              <span className="text-xl sm:text-2xl font-mono font-bold text-[#c5a880]">
+              <span className="text-2xl font-mono font-bold text-[#c5a880]">
                 {formattedPrice}
               </span>
             </div>
@@ -287,8 +310,13 @@ export default function ProductsSection({ products = [] }) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isBannerHovered, setIsBannerHovered] = useState(false);
 
   const allProducts = products && products.length > 0 ? products : DEFAULT_PRODUCTS;
+
+  // Sourcing Lookbook Images for Fan preview
+  const fallbackImages = ['/assets/product-1.jpg', '/assets/product-2.jpg', '/assets/product-3.jpg'];
+  const lookbookImages = [0, 1, 2].map((i) => allProducts[i]?.image || fallbackImages[i]);
 
   const categories = ['ALL', 'NUTRITION', 'EQUIPMENT', 'APPAREL'];
 
@@ -450,7 +478,7 @@ export default function ProductsSection({ products = [] }) {
                 href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888] text-white text-xs font-bold uppercase tracking-widest hover:opacity-95 transition-opacity w-full sm:w-auto shadow-[0_0_15px_rgba(220,39,67,0.4)]"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-black/60 border border-white/20 text-white hover:border-[#c5a880] hover:text-[#c5a880] text-xs font-bold uppercase tracking-widest transition-colors w-full sm:w-auto"
               >
                 <span>Instagram</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
@@ -480,7 +508,7 @@ export default function ProductsSection({ products = [] }) {
         </div>
       </div>
 
-      {/* ==================== 4. GLOWING FLOATING INSTAGRAM SHOWCASE ==================== */}
+      {/* ==================== 4. LUXURY EDITORIAL LOOKBOOK INSTAGRAM BANNER ==================== */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 sm:mt-16">
         <motion.div
           initial={{ opacity: 0, y: 35 }}
@@ -488,109 +516,25 @@ export default function ProductsSection({ products = [] }) {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
           className="relative group"
+          onMouseEnter={() => setIsBannerHovered(true)}
+          onMouseLeave={() => setIsBannerHovered(false)}
         >
-          {/* Multi-Layered Instagram Sunrise & Champagne Gold Aura Glow (Floating Pulsing Effect) */}
-          <motion.div
-            animate={{
-              scale: [1, 1.025, 1],
-              opacity: [0.35, 0.6, 0.35],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 3.5,
-              ease: 'easeInOut',
-            }}
-            className="absolute -inset-1.5 bg-gradient-to-r from-[#f09433] via-[#dc2743] via-[#bc1888] to-[#c5a880] rounded-3xl blur-2xl group-hover:opacity-95 transition-opacity duration-700 pointer-events-none"
-          />
+          {/* Subtle Ambient Gold Radial Glow (No loud neon/pink!) */}
+          <div className="absolute -inset-1 bg-[radial-gradient(circle_at_center,rgba(197,168,128,0.18)_0%,rgba(197,168,128,0.05)_50%,transparent_80%)] rounded-3xl blur-2xl group-hover:opacity-100 opacity-60 transition-opacity duration-700 pointer-events-none" />
 
-          {/* Floating Levitating Interactive Container */}
-          <motion.a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            animate={{ y: [0, -8, 0] }}
-            transition={{
-              repeat: Infinity,
-              duration: 4,
-              ease: 'easeInOut',
-            }}
-            whileHover={{ scale: 1.015, y: -12 }}
-            whileTap={{ scale: 0.985 }}
-            className="relative block w-full bg-gradient-to-br from-[#121217] via-[#0d0d11] to-[#070709] border border-white/15 hover:border-[#c5a880] p-6 sm:p-9 rounded-2xl shadow-[0_15px_50px_rgba(0,0,0,0.85)] overflow-hidden cursor-pointer transition-all duration-300"
-          >
-            {/* Background Decorative Radial Shimmer */}
-            <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-br from-[#dc2743]/20 via-[#bc1888]/20 to-transparent rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-[#c5a880]/15 rounded-full blur-3xl pointer-events-none" />
+          {/* Full-width obsidian card */}
+          <div className="relative w-full bg-gradient-to-br from-[#111116] via-[#0b0b0e] to-[#08080a] border border-[#c5a880]/25 group-hover:border-[#c5a880]/60 p-7 sm:p-10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden transition-all duration-500">
+            {/* Subtle background luxury accents */}
+            <div className="absolute -top-24 -left-24 w-72 h-72 bg-[#c5a880]/[0.04] rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-[#c5a880]/[0.05] rounded-full blur-3xl pointer-events-none" />
 
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
-              {/* Left Column: Floating Glowing Instagram Icon + Copy */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start md:items-center gap-5 sm:gap-6 text-center sm:text-left">
-                {/* 3D Levitating Instagram Badge */}
-                <div className="relative shrink-0">
-                  {/* Outer Pulsing Glow Halo */}
-                  <motion.div
-                    animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.95, 0.6] }}
-                    transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }}
-                    className="absolute -inset-2 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] rounded-2xl blur-lg"
-                  />
-
-                  {/* Main Instagram Gradient Cube */}
-                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] p-[2.5px] shadow-[0_0_35px_rgba(220,39,67,0.65)] flex items-center justify-center transform group-hover:rotate-3 transition-transform duration-300">
-                    <div className="w-full h-full rounded-[14px] bg-[#0b0b0e]/85 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-transparent transition-colors duration-300">
-                      {/* High-Definition Official Instagram Glyphs */}
-                      <svg
-                        className="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.9"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Live Status Pulse Dot */}
-                  <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-black" />
-                  </span>
-                </div>
-
-                {/* Typography & Offerings Details */}
-                <div className="space-y-1.5 max-w-xl">
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                    <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#c5a880] font-bold">
-                      OFFICIAL PRO SHOP INSTAGRAM
-                    </span>
-                    <span className="px-2.5 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-white/10 text-white rounded-full border border-white/15 font-semibold">
-                      {INSTAGRAM_HANDLE}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-white font-display group-hover:text-[#c5a880] transition-colors">
-                    Iconic Threads <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888]">Pro Shop</span>
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
-                    Exclusive Oversized Streetwear Drops • Hydrolyzed Native Whey • Micronized Creapure Creatine • Heavy Lifting Accessories
-                  </p>
-
-                  <span className="inline-block text-[11px] font-mono text-[#c5a880] pt-0.5">
-                    Tap to view new arrivals, sizing guides & DM orders on Instagram →
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column: Floating Magnetic Action Button */}
-              <div className="shrink-0 flex items-center">
-                <div className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888] text-white font-mono text-xs font-bold uppercase tracking-widest flex items-center gap-2.5 shadow-[0_0_30px_rgba(220,39,67,0.55)] group-hover:shadow-[0_0_45px_rgba(220,39,67,0.85)] group-hover:scale-105 transition-all">
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+              {/* Left Column (Editorial Copy & CTA) */}
+              <div className="flex-1 space-y-4 text-center lg:text-left">
+                {/* Subtle gold eyebrow pill with clean monochrome Instagram icon */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/[0.04] border border-[#c5a880]/30 rounded-full">
                   <svg
-                    className="w-4 h-4 text-white"
+                    className="w-3.5 h-3.5 text-[#c5a880]"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -602,12 +546,113 @@ export default function ProductsSection({ products = [] }) {
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                   </svg>
-                  <span>Explore Drops</span>
-                  <ArrowUpRight className="w-4 h-4 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#e5c99e] font-semibold">
+                    OFFICIAL PRO SHOP • @ICONICTHREADS.UK
+                  </span>
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-white font-display">
+                    ICONIC THREADS
+                  </h3>
+                  <p className="text-xs sm:text-sm font-mono tracking-widest text-[#c5a880] uppercase font-semibold">
+                    CURATED DROPS & NUTRITION
+                  </p>
+                </div>
+
+                <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed max-w-xl">
+                  Oversized gym streetwear, verified supplements & heavy lifting gear — daily drops and direct DM orders.
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                  <a
+                    href={INSTAGRAM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#c5a880] hover:bg-white text-black font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-[0_0_20px_rgba(197,168,128,0.25)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] cursor-pointer"
+                  >
+                    <span>VIEW ON INSTAGRAM</span>
+                    <ArrowUpRight className="w-4 h-4 text-black" />
+                  </a>
+
+                  <span className="text-[11px] font-mono text-gray-400">
+                    Direct Orders via Instagram DM
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column (Animated 3-Card Lookbook Fan) */}
+              <div className="relative w-full lg:w-auto flex items-center justify-center py-6 sm:py-8 lg:py-0 px-4">
+                <div className="relative w-64 sm:w-72 md:w-80 h-52 sm:h-60 flex items-center justify-center">
+                  {/* Card 0 (Left Fan Card) */}
+                  <motion.div
+                    animate={
+                      isBannerHovered
+                        ? { x: -65, y: -4, rotate: -10, scale: 0.95 }
+                        : { x: -35, y: 6, rotate: -6, scale: 0.9 }
+                    }
+                    transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                    className="absolute w-32 sm:w-36 md:w-40 aspect-[4/5] rounded-xl bg-[#0e0e12] border border-[#c5a880]/30 shadow-2xl overflow-hidden p-2 flex items-center justify-center z-10 pointer-events-none"
+                  >
+                    <div className="w-full h-full rounded-lg bg-black/60 overflow-hidden flex items-center justify-center">
+                      <img
+                        src={lookbookImages[0]}
+                        alt="Lookbook 1"
+                        className="w-full h-full object-contain filter contrast-[1.04]"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Card 2 (Right Fan Card) */}
+                  <motion.div
+                    animate={
+                      isBannerHovered
+                        ? { x: 65, y: -4, rotate: 10, scale: 0.95 }
+                        : { x: 35, y: 6, rotate: 6, scale: 0.9 }
+                    }
+                    transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                    className="absolute w-32 sm:w-36 md:w-40 aspect-[4/5] rounded-xl bg-[#0e0e12] border border-[#c5a880]/30 shadow-2xl overflow-hidden p-2 flex items-center justify-center z-10 pointer-events-none"
+                  >
+                    <div className="w-full h-full rounded-lg bg-black/60 overflow-hidden flex items-center justify-center">
+                      <img
+                        src={lookbookImages[2]}
+                        alt="Lookbook 3"
+                        className="w-full h-full object-contain filter contrast-[1.04]"
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Card 1 (Center Front Card with Idle Float) */}
+                  <motion.div
+                    animate={
+                      isBannerHovered
+                        ? { y: -12, scale: 1.05, rotate: 0 }
+                        : { y: [0, -6, 0], scale: 1, rotate: 0 }
+                    }
+                    transition={
+                      isBannerHovered
+                        ? { type: 'spring', stiffness: 220, damping: 22 }
+                        : { repeat: Infinity, duration: 3.5, ease: 'easeInOut' }
+                    }
+                    className="relative w-36 sm:w-40 md:w-44 aspect-[4/5] rounded-xl bg-[#14141a] border border-[#c5a880]/60 shadow-[0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden p-2.5 flex flex-col justify-between z-20"
+                  >
+                    <div className="w-full flex-1 rounded-lg bg-black/70 overflow-hidden flex items-center justify-center relative">
+                      <img
+                        src={lookbookImages[1]}
+                        alt="Lookbook 2"
+                        className="w-full h-full object-contain filter contrast-[1.06]"
+                      />
+                    </div>
+                    <div className="mt-2 py-0.5 px-2 bg-black/80 backdrop-blur-md border border-[#c5a880]/30 text-center rounded">
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#e5c99e] font-semibold truncate block">
+                        @iconicthreads.uk
+                      </span>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
             </div>
-          </motion.a>
+          </div>
         </motion.div>
       </div>
     </section>
