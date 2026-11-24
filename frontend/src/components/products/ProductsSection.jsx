@@ -209,12 +209,6 @@ function ProductCardItem({ product, index }) {
 
   const formattedPrice = formatPrice(product.price);
 
-  const handleInquire = () => {
-    const url = getWhatsAppUrl(
-      `Hello The Fitness Club, I would like to inquire about purchasing: ${product.name} (${formattedPrice}).`
-    );
-    window.open(url, '_blank');
-  };
 
   // Split edition into clean spec tags if present
   const specTags = product.edition
@@ -311,14 +305,15 @@ function ProductCardItem({ product, index }) {
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={handleInquire}
+            <a
+              href={PRO_SHOP_INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-4 py-2 bg-[#c5a880] hover:bg-white text-black text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer shrink-0"
             >
               <span>Inquire</span>
               <ArrowUpRight className="w-3.5 h-3.5 text-black" />
-            </button>
+            </a>
           </div>
         </div>
       </motion.div>
