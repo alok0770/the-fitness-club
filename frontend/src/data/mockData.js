@@ -114,4 +114,14 @@ export const productsData = [
     image: '/assets/product-4.jpg',
     status: 'In Stock',
   },
+  {
+    id: 5,
+    name: 'Architect Zero-Drop Barefoot Lifting Shoes',
+    edition: 'Vibram Sole • Wide Toe Box',
+    category: 'Shoes',
+    price: '₹6,499',
+    details: 'Ultra-flat ground feedback with reinforced lateral containment for heavy squats and pulls.',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    status: 'In Stock',
+  },
 ];

@@ -165,6 +165,28 @@ const DEFAULT_PRODUCTS = [
     status: 'In Stock',
     badge: 'Anti-Chafe',
   },
+  {
+    id: 15,
+    name: 'Architect Zero-Drop Barefoot Lifting Shoes',
+    edition: 'Zero-Drop • Vibram Sole • Wide Toe Box',
+    category: 'Shoes',
+    price: '₹6,499',
+    details: 'Ultra-flat ground feedback with reinforced lateral containment for heavy squats and pulls.',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    status: 'In Stock',
+    badge: 'Powerlifting Spec',
+  },
+  {
+    id: 16,
+    name: 'TFC Competition Deadlift Slippers',
+    edition: '2mm Ultra-Thin Sole • Dual Lock Straps',
+    category: 'Shoes',
+    price: '₹2,799',
+    details: 'Minimalist rubber traction sole bringing feet as close to the platform as possible.',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
+    status: 'In Stock',
+    badge: 'Platform Approved',
+  },
 ];
 
 // Helper to auto-format price with ₹ prefix if missing
@@ -344,12 +366,18 @@ export default function ProductsSection({ products = [] }) {
 
   const marqueeDuration = Math.max(16, baseTrack.length * 3.5);
 
-  const categories = ['ALL', 'APPAREL', 'NUTRITION'];
+  const categories = ['ALL', 'APPAREL', 'SHOES', 'NUTRITION'];
 
   const filteredProducts =
     activeCategory === 'ALL'
       ? allProducts
-      : allProducts.filter((p) => p.category?.toUpperCase() === activeCategory);
+      : allProducts.filter((p) => {
+          const cat = p.category?.toUpperCase() || '';
+          if (activeCategory === 'SHOES') {
+            return cat === 'SHOES' || cat === 'FOOTWEAR' || cat === 'SHOE';
+          }
+          return cat === activeCategory;
+        });
 
   const updateScrollState = () => {
     if (!scrollContainerRef.current) return;

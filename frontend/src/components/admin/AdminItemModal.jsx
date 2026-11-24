@@ -680,8 +680,9 @@ export default function AdminItemModal({
                     className="w-full bg-black/60 border border-white/15 focus:border-[#c5a880] px-3.5 py-2 text-sm text-white outline-none"
                   >
                     <option value="Apparel">Apparel</option>
+                    <option value="Shoes">Shoes</option>
                     <option value="Nutrition">Nutrition</option>
-                    {formData.category && !['Apparel', 'Nutrition'].includes(formData.category) && (
+                    {formData.category && !['Apparel', 'Shoes', 'Nutrition'].includes(formData.category) && (
                       <option value={formData.category}>{formData.category}</option>
                     )}
                   </select>
