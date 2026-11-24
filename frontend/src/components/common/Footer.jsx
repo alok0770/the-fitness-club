@@ -131,11 +131,22 @@ export default function Footer() {
 
       {/* Copyright Strip (Dead href="#" replaced with non-jumping span elements) */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 border-t border-white/[0.06] pt-8 flex flex-col md:flex-row items-center justify-between text-[11px] uppercase tracking-widest text-gray-500 gap-4">
-        <p>© 2026 {BRAND_NAME}. Joshiyara Road, Uttarkashi. All Rights Reserved.</p>
-        <div className="flex items-center gap-8">
+        <p className="text-center md:text-left">© 2026 {BRAND_NAME}. Joshiyara Road, Uttarkashi. All Rights Reserved.</p>
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-6 gap-y-2">
           <span className="hover:text-gray-300 transition-colors cursor-default select-none">Privacy Policy</span>
           <span className="hover:text-gray-300 transition-colors cursor-default select-none">Terms of Covenant</span>
           <Link to="/admin" className="text-gray-600 hover:text-[#c5a880] transition-colors">Owner Sanctum</Link>
+          <span className="text-white/20 select-none hidden sm:inline">•</span>
+          <a
+            href="https://www.instagram.com/alok.xoxx/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Developed by Alok on Instagram"
+            className="inline-flex items-center gap-1.5 text-[10px] tracking-widest uppercase text-gray-600 hover:text-[#c5a880] transition-colors duration-300"
+          >
+            <span>Developed by Alok</span>
+            <Instagram className="w-3 h-3" />
+          </a>
         </div>
       </div>
     </footer>
